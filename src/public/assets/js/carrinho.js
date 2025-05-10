@@ -1,3 +1,4 @@
+// http://localhost:3001
 
 function getCarrinho() {
     return fetch(API_URL).then(res => res.json());
