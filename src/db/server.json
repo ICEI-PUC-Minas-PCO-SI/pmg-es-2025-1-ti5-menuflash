@@ -1,0 +1,29 @@
+{
+  "carrinho": {
+    "id": 1,
+    "itens": []
+  },
+  "carrinhoComItens": {
+    "id": 2,
+    "itens": [
+      {
+        "id": 1,
+        "nome": "X-Burger",
+        "preco": 15.90,
+        "quantidade": 2
+      },
+      {
+        "id": 2,
+        "nome": "Batata Frita",
+        "preco": 8.90,
+        "quantidade": 1
+      },
+      {
+        "id": 3,
+        "nome": "Refrigerante",
+        "preco": 5.90,
+        "quantidade": 2
+      }
+    ]
+  }
+}
