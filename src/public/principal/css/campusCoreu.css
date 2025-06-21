@@ -1,0 +1,35 @@
+body 
+{
+    background-color: rgb(240, 240, 240);
+}
+header{
+  background-color: #a00000;
+}
+.logo-container 
+{
+    flex: 1;
+    justify-content: center;
+}
+.logo-img 
+{
+    max-height: 130px;
+}
+.mapboxgl-popup-content.popup-personalizado,
+.popup-personalizado 
+{
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    padding: 5px;
+}
+#lanchonetes-container a.btn {
+  transition: all 0.3s ease;
+  min-width: 220px;
+}
+
+#lanchonetes-container a.btn:hover {
+  background-color: white;
+  color: #a00000;
+  border-color: white;
+}

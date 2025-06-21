@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/cadastroDeItens.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5c015c8b62.js" crossorigin="anonymous"></script>
+</head>
+
+<body onload="init()" class="d-flex flex-column vh-100">
+
+    <header class="bg-dark py-2">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+            <div class="container-fluid">
+
+                <a class="navbar-brand fs-3" href="index.html">
+                    <h3 style="color: white;" id="tituloPrincipal">MenuFlash</h3>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavContent" aria-controls="navbarNavContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNavContent">
+
+                    <ul id="linksDoUsuario" class="navbar-nav me-auto mb-2 mb-lg-0">
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <!-- Depois fazer com que -->
+                            <a style="color: rgb(255, 255, 255);" class="nav-link fs-5"
+                                href="../principal/index.html">Voltar</a>
+                        </li>
+                    </ul>
+
+
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+
+
+
+    <div class="container" style="margin-top: 3rem;">
+        <div id="nomeLanchonete" class="py-4">
+
+        </div>
+
+        <form id="formFilmes" class="row g-3">
+            <div class="col-md-1">
+                <label for="inputEmail4" class="form-label">Id</label>
+                <input type="text" class="form-control" id="inputId" disabled>
+            </div>
+            <div class="col-md-3">
+                <label for="inputEmail4" class="form-label">Disponibilidade (*)</label>
+                <select class="form-select" name="" id="selectDisponivel">
+                    <option value="disponivel">Disponível</option>
+                    <option value="indisponivel">Indisponível</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="inputEmail4" class="form-label">Nome (*)</label>
+                <input type="text" class="form-control" id="inputTitulo" placeholder="Nome do item" required>
+            </div>
+
+            <div class="col-md-2">
+                <label for="inputCity" class="form-label">Conteudo</label>
+                <input type="text" class="form-control" id="inputConteudo" placeholder="Conteudo (ml)">
+            </div>
+
+            <div class="col-md-6">
+                <label for="inputPassword4" class="form-label">Descrição (*)</label>
+                <input type="text" class="form-control" id="inputDescricao" placeholder="Gêneros" required>
+            </div>
+            <!-- Incluir lógica para inserir número com R$ no Json -->
+            <div class="col-md-3">
+                <label for="inputAddress" class="form-label">Valor (0.0) (*)</label>
+                <input type="number" class="form-control" id="inputValor" required placeholder="Valor">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Opções</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="escolha" id="opcaoA" value="semLactose">
+                    <label class="form-check-label" for="opcaoA">Sem Lactose</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="escolha" id="opcaoB" value="semGluten">
+                    <label class="form-check-label" for="opcaoB">Sem Glúten</label>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button id="btnAdicionar" type="button" class="btn btn-success">Adicionar</button>
+                <button id="btnEditar" type="button" class="btn btn-warning">Editar</button>
+                <button id="btnExcluir" type="button" class="btn btn-danger">Excluir</button>
+                <button id="btnLimpar" type="button" class="btn btn-light">Limpar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tabela de Itens -->
+    <div class="container" style="margin-top: 2rem;">
+        <div class="col-sm-12">
+            <h3>Itens Cadastrados</h3>
+            <div class="table-responsive">
+                <table id="tableFilmes" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Disponivel</th>
+                            <th scope="col">Imagem</th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col">Conteúdo</th>
+                            <th scope="col">Sem Lactose</th>
+                            <th scope="col">Sem Glúten</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaFilmes">
+                        <tr>
+                            <th scope="row">1</th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/cadastroDeItens.js"></script>
+
+    <script>
+        let minhaLanId = null;
+
+        function init() {
+            identificaMinhaLanchonete(() => lerItens(renderTable));
+        }
+
+        // 1) Encontra o admin, pega lanchoneteId e exibe nome
+        function identificaMinhaLanchonete(callback) {
+            fetch('http://localhost:3000/usuarios')
+                .then(res => res.json())
+                .then(usuarios => {
+                    const usuarioLogado = JSON.parse(sessionStorage.getItem("usuarioLogado") || '{}');
+                    const admin = usuarios.find(u =>
+                        String(u.id) === String(usuarioLogado.id) && u.tipo === "administrador"
+                    );
+                    if (!admin) {
+                        console.warn("Usuário não é administrador.");
+                        return;
+                    }
+                    minhaLanId = admin.lanchoneteId;
+                    // pega só essa lanchonete pra exibir o nome
+                    fetch(`http://localhost:3000/lanchonetes`)
+                        .then(r2 => r2.json())
+                        .then(lans => {
+                            const lan = lans.find(l => String(l.id) === String(minhaLanId));
+                            if (lan) document.getElementById("nomeLanchonete").innerHTML = `<h2>${lan.nome}</h2>`;
+                            if (callback) callback();
+                        })
+                        .catch(e2 => console.error("Erro ao buscar lanchonetes:", e2));
+                })
+                .catch(err => console.error("Erro ao buscar usuários:", err));
+        }
+
+        // 2) lerItens agora busca /lanchonetes, filtra a certa e retorna só .itens
+        function lerItens(processaDados) {
+            fetch('http://localhost:3000/lanchonetes')
+                .then(res => res.json())
+                .then(lanchonetes => {
+                    const lan = lanchonetes.find(l => String(l.id) === String(minhaLanId));
+                    const itens = lan?.itens || [];
+                    processaDados(itens);
+                })
+                .catch(error => console.log('Erro ao carregar itens', error));
+        }
+
+        function cadastrarItem(item, refresh) {
+            // para inserir, pegamos toda a lanchonete, adicionamos no array e damos um PUT
+            fetch(`http://localhost:3000/lanchonetes`)
+                .then(r => r.json())
+                .then(lans => {
+                    const lan = lans.find(l => String(l.id) === String(minhaLanId));
+                    const novosItens = [...(lan.itens || []), item];
+                    return fetch(`http://localhost:3000/lanchonetes/${minhaLanId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...lan, itens: novosItens })
+                    });
+                })
+                .then(_ => {
+                    alert('Item adicionado com sucesso!');
+                    if (refresh) refresh();
+                })
+                .catch(e => console.log('Erro ao adicionar item', e));
+        }
+
+        function editarItem(id, item, refresh) {
+            fetch('http://localhost:3000/lanchonetes')
+                .then(r => r.json())
+                .then(lans => {
+                    const lan = lans.find(l => String(l.id) === String(minhaLanId));
+                    const novosItens = (lan.itens || []).map(i => i.id == id ? item : i);
+                    return fetch(`http://localhost:3000/lanchonetes/${minhaLanId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...lan, itens: novosItens })
+                    });
+                })
+                .then(_ => {
+                    alert('Item alterado com sucesso!');
+                    if (refresh) refresh();
+                })
+                .catch(e => console.log('Erro ao alterar item', e));
+        }
+
+        function excluirItem(id, refresh) {
+            fetch('http://localhost:3000/lanchonetes')
+                .then(r => r.json())
+                .then(lans => {
+                    const lan = lans.find(l => String(l.id) === String(minhaLanId));
+                    const novosItens = (lan.itens || []).filter(i => i.id != id);
+                    return fetch(`http://localhost:3000/lanchonetes/${minhaLanId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...lan, itens: novosItens })
+                    });
+                })
+                .then(_ => {
+                    alert('Item excluído com sucesso!');
+                    if (refresh) refresh();
+                })
+                .catch(e => console.log('Erro ao excluir item', e));
+        }
+
+        // 3) Renderiza a tabela
+        function renderTable(itens) {
+            const tbody = document.getElementById("tabelaFilmes");
+            tbody.innerHTML = '';
+            itens.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+        <td>${item.id}</td>
+        <td>${item.disponivel ? 'Disponível' : 'Indisponível'}</td>
+        <td>${item.imagem || ''}</td>
+        <td>${item.titulo}</td>
+        <td>${item.descricao}</td>
+        <td>${item.valor}</td>
+        <td>${item.conteudo}</td>
+        <td>${item.semLactose ? '✔️' : ''}</td>
+        <td>${item.semGluten ? '✔️' : ''}</td>
+      `;
+                tr.addEventListener("click", () => {
+                    document.getElementById("inputId").value = item.id;
+                    document.getElementById("selectDisponivel").value = item.disponivel ? 'disponivel' : 'indisponivel';
+                    document.getElementById("inputTitulo").value = item.titulo;
+                    document.getElementById("inputConteudo").value = item.conteudo;
+                    document.getElementById("inputDescricao").value = item.descricao;
+                    document.getElementById("inputValor").value = item.valor;
+                    document.getElementById("opcaoA").checked = item.semLactose;
+                    document.getElementById("opcaoB").checked = item.semGluten;
+                });
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 4) Botões
+        document.getElementById("btnAdicionar").addEventListener("click", () => {
+            const novo = {
+                id: Date.now(),                   // ou outro gerador de ID
+                titulo: document.getElementById("inputTitulo").value,
+                descricao: document.getElementById("inputDescricao").value,
+                valor: document.getElementById("inputValor").value,
+                conteudo: document.getElementById("inputConteudo").value,
+                disponivel: document.getElementById("selectDisponivel").value === 'disponivel',
+                semLactose: document.getElementById("opcaoA").checked,
+                semGluten: document.getElementById("opcaoB").checked,
+                imagem: ""
+            };
+            cadastrarItem(novo, () => lerItens(renderTable));
+        });
+
+        document.getElementById("btnEditar").addEventListener("click", () => {
+            const id = document.getElementById("inputId").value;
+            if (!id) return alert("Clique numa linha para selecionar.");
+            const upd = {
+                id: Number(id),
+                titulo: document.getElementById("inputTitulo").value,
+                descricao: document.getElementById("inputDescricao").value,
+                valor: document.getElementById("inputValor").value,
+                conteudo: document.getElementById("inputConteudo").value,
+                disponivel: document.getElementById("selectDisponivel").value === 'disponivel',
+                semLactose: document.getElementById("opcaoA").checked,
+                semGluten: document.getElementById("opcaoB").checked,
+                imagem: ""
+            };
+            editarItem(id, upd, () => lerItens(renderTable));
+        });
+
+        document.getElementById("btnExcluir").addEventListener("click", () => {
+            const id = document.getElementById("inputId").value;
+            if (!id) return alert("Clique numa linha para selecionar.");
+            if (confirm("Excluir item #" + id + "?")) {
+                excluirItem(id, () => lerItens(renderTable));
+            }
+        });
+
+        document.getElementById("btnLimpar").addEventListener("click", () => {
+            document.getElementById("formFilmes").reset();
+            document.getElementById("inputId").value = '';
+        });
+
+        // 5) onload
+        window.init = init;
+    </script>
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+{
+    "campus": [
+        {
+            "nome": "PUC MINAS - Coração Eucarístico",
+            "mapa": "mapaCoreu.html",
+            "lanchonetes": [
+                {
+                    "nome": "Lanchonete Central",
+                    "id": "lanchonete-central"
+                },
+                {
+                    "nome": "Lanchonete Prédio 18",
+                    "id": "lanchonete-18"
+                },
+                {
+                    "nome": "Lanchonete Prédio 29",
+                    "id": "lanchonete-29"
+                }
+            ]
+        },
+        {
+            "nome": "PUC MINAS - Contagem",
+            "mapa": "mapaContagem.html",
+            "lanchonetes": [
+                {
+                    "nome": "Lanchonete Praçaki",
+                    "id": "lanchonete-pracaki"
+                },
+                {
+                    "nome": "Lanchonete Praçala",
+                    "id": "lanchonete-pracala"
+                }
+            ]
+        }
+    ]
+}

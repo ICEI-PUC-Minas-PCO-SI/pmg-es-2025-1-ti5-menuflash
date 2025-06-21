@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Início</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        .carrinho-icon { position: relative; cursor: pointer; }
+        .carrinho-contador {
+            position: absolute; top: -5px; right: -10px;
+            background-color: #dc3545; color: white;
+            border-radius: 50%; width: 22px; height: 22px;
+            font-size: 0.75rem; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; border: 2px solid white;
+        }
+    </style>
+</head>
+
+<body>
+    <header class=" py-3 px-4 d-flex align-items-center justify-content-between shadow-sm" style="background-color: #a00000 !important;">
+        <div class="logo-container">
+            <img src="img/logoMenuFlash.png" alt="Logo Menu Flash" class="img-fluid logo-img" style="max-height: 80px;">
+        </div>
+        <div class="d-flex align-items-center">
+            <div class="fw-bold text-white px-5 d-flex gap-4" id="linksDoUsuario"></div>
+            <a href="../carrinho/index.html" class="carrinho-icon text-white text-decoration-none">
+                <i class="bi bi-cart3 fs-2"></i>
+                <span class="carrinho-contador" style="display: none;">0</span>
+            </a> 
+        </div>
+    </header>
+
+    <!--NAVBAR-->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="index.html">Alterar Campus</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Alterar Lanchonete</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Peça Novamente</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-5 px-5 container text-center text-white">
+        <h1 class="mb-4 text-black">ESCOLHA SEU CAMPUS</h1>
+        <div class="row row-cols-1 row-cols-md-2 gy-3 gx-3">
+            <div class="col">
+                <a href="campusCoreu.html">
+                    <div class="card bg-dark text-white border-1 shadow" style="cursor: pointer;"
+                        onclick="irParaMapa('campusCoreu')">
+                        <img src="img\campus-coreu.jpg" class="card-img" alt="Coração Eucarístico"
+                            style="height: 200px; object-fit: cover;">
+                        <div class="card-img-overlay d-flex align-items-center justify-content-center">
+                            <h4 class="card-title bg-dark bg-opacity-75 px-2 py-2 rounded">PUC CORAÇÃO EUCARÍSTICO</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col">
+                <a href="campusContagem.html">
+                    <div class="card bg-dark text-white border-1 shadow" style="cursor: pointer;"
+                        onclick="irParaMapa('campusContagem')">
+                        <img src="img/campus-contagem.png" class="card-img" alt="Contagem"
+                            style="height: 200px; object-fit: cover;">
+                        <div class="card-img-overlay d-flex align-items-center justify-content-center">
+                            <h4 class="card-title bg-dark bg-opacity-75 px-2 py-2 rounded">PUC CONTAGEM</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-light text-black text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0">Menu Flash. Todos os direitos reservados &copy; 2025</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/index.js"></script>
+
+    <script src="../cadastro_login/js/inserirLogin.js"></script>
+
+    <script>
+        // Este script deve rodar em TODAS as páginas que têm o link de "Entrar"
+        document.addEventListener('DOMContentLoaded', function () {
+            const linkParaLogin = document.querySelector('a[href*="login.html"]'); // Um seletor mais genérico
+
+            if (linkParaLogin) {
+                const urlAtual = window.location.href;
+                // A mágica acontece aqui:
+                // Nós pegamos o href original e adicionamos o parâmetro `redirectUrl`.
+                // Usamos encodeURIComponent para garantir que caracteres especiais na URL não quebrem o link.
+                linkParaLogin.href = linkParaLogin.href + `?redirectUrl=${encodeURIComponent(urlAtual)}`;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const atualizarContador = () => {
+                const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+                const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+                const contador = document.querySelector('.carrinho-contador');
+                if (contador) {
+                    contador.textContent = totalItens;
+                    contador.style.display = totalItens > 0 ? 'flex' : 'none';
+                }
+            };
+            atualizarContador();
+            window.addEventListener('storageChanged', atualizarContador);
+            window.addEventListener('storage', atualizarContador); // Para sincronia entre abas
+        });
+
+    </script>
+
+</body>
+
+</html>

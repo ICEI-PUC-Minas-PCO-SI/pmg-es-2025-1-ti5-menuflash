@@ -1,43 +1,37 @@
-# Introdução
+**Introdução**
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+O projeto Menu Flash surgiu a partir de uma necessidade observada no cotidiano dos alunos da PUC Minas: o curto intervalo de apenas 10 minutos entre as aulas. Esse tempo reduzido dificulta a realização de atividades simples como comprar um lanche, gerando filas longas nas lanchonetes e atrasos para as próximas aulas. Pensando nisso, o projeto propõe uma solução prática e eficiente que visa otimizar esse processo por meio de uma plataforma digital que possibilita a compra antecipada dos produtos, restando ao usuário apenas a retirada no local.
 
-## Problema
-Aqui, a equipe deve fornecer uma descrição detalhada do problema a ser resolvido. Não é o momento adequado para abordar questões técnicas relacionadas ao desenvolvimento da aplicação. O objetivo é compreender e comunicar de maneira precisa qual é o desafio ou necessidade que motiva a criação da aplicação.
+A proposta se mostra relevante tanto para os estudantes quanto para os funcionários das lanchonetes, pois facilita o atendimento, melhora a organização e reduz o tempo de espera. O público-alvo inclui toda a comunidade acadêmica da universidade, desde alunos e professores até os próprios colaboradores das lanchonetes.
 
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de fato existir, pois ainda não é a hora de apresentar requisitos detalhados ou projetos.
+**Problema**
 
-O grupo pode optar por fazer uso de ferramentas como Design Thinking, que permite uma visão completa do problema.
+Atualmente, os alunos da PUC Minas enfrentam um desafio comum durante os intervalos entre as aulas: filas extensas nas lanchonetes e pouco tempo disponível. Com apenas 10 minutos de pausa, muitos estudantes acabam se atrasando para a aula seguinte ou até mesmo deixando de lanchar — o que pode ser ainda mais prejudicial em dias de provas ou atividades importantes.
 
-> **Links úteis**:
-> - [Objetivos, problema de pesquisa e justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz certezas, suposições e dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
+O problema não afeta apenas os alunos. As lanchonetes também enfrentam dificuldade para atender rapidamente a grande demanda em um curto espaço de tempo, o que impacta diretamente na organização, na qualidade do serviço e na satisfação dos clientes.
 
-## Objetivos
+O sistema Menu Flash será utilizado neste contexto universitário, sendo aplicado diretamente nas lanchonetes da PUC Minas, com o objetivo de tornar esse processo mais ágil e eficiente para todos os envolvidos.
 
-Aqui, você deve descrever os objetivos do trabalho, indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima.
+**Objetivos**
 
-Além disso, apresente alguns (pelo menos 3) objetivos específicos, dependendo de onde você pretende concentrar sua prática investigativa ou como deseja aprofundar seu trabalho.
+Objetivo Geral:
+Desenvolver uma plataforma digital que permita a realização de pedidos antecipados em lanchonetes da PUC Minas, otimizando o tempo disponível durante os intervalos e reduzindo as filas de espera.
+
+Objetivos Específicos:
+- Criar uma interface intuitiva que permita aos usuários realizarem pedidos online de forma rápida e prática.
+
+- Garantir que o sistema funcione de forma integrada com os processos internos das lanchonetes, facilitando a organização e separação dos pedidos.
+
+- Reduzir significativamente o tempo de espera e a formação de filas, contribuindo para uma rotina acadêmica mais eficiente.
  
-> **Links úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+**Justificativa**
 
-## Justificativa
+A ideia do projeto nasceu a partir de uma observação feita em sala de aula, onde alguns alunos relataram a dificuldade em lanchar durante os breves intervalos. As filas nas lanchonetes acabam ocupando quase todo o tempo disponível, o que leva muitos estudantes a chegarem atrasados às aulas ou simplesmente deixarem de se alimentar.
 
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
+Considerando a importância de manter uma boa alimentação e de respeitar os horários acadêmicos, a criação do Menu Flash se mostra uma solução viável e necessária. A automatização dos pedidos e a retirada rápida ajudam não só os alunos, mas também os próprios funcionários das lanchonetes, que poderão se organizar melhor durante os horários de pico.
 
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
+**Público-alvo**
 
-> **Links úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
+O público-alvo do Menu Flash é composto por alunos, professores, funcionários e comerciantes que atuam nas lanchonetes dentro do campus da PUC Minas. Esse grupo abrange diferentes perfis, faixas etárias e níveis de familiaridade com tecnologia.
 
-## Público-alvo
-
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação, mas sim oferecer uma visão detalhada do perfil de cada grupo de usuários. Isso inclui informações sobre seu nível de conhecimento prévio, familiaridade com tecnologia, e suas relações hierárquicas ou contextos de uso. Dessa forma, será possível entender melhor as necessidades e expectativas dos diferentes tipos de usuários, garantindo uma experiência mais eficiente e adaptada.
-
-> **Links úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público-alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
+Apesar da diversidade, é esperado que os usuários tenham ao menos um conhecimento básico em navegação web e acesso a dispositivos como celulares ou computadores com internet. A plataforma será desenvolvida com foco na simplicidade de uso, para garantir acessibilidade e eficiência mesmo para quem não possui grande intimidade com tecnologia.

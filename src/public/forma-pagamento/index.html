@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forma de Pagamento - MenuFlash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="container-fluid bg-light shadow-sm py-3">
+        <div class="container text-center">
+            <a href="../principal/index.html" class="text-decoration-none">
+                <span class="fs-2 fw-bold text-danger">MENU</span><span class="fs-4" style="color: orange; font-family: cursive;">Flash</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="container my-5 text-center">
+        <div class="payment-container mx-auto">
+            <div id="initial-choice">
+                <i class="bi bi-credit-card-2-front display-1 text-primary"></i>
+                <h1 class="h2 mt-3">Como você gostaria de pagar?</h1>
+                <p class="lead text-muted">Selecione uma das opções abaixo para concluir seu pedido.</p>
+                
+                <div id="order-summary" class="text-start my-4 p-3 border rounded bg-white">
+                    <!-- O resumo do pedido será inserido aqui -->
+                </div>
+
+                <div class="d-grid gap-3 mt-4">
+                    <button id="btn-show-pix" class="btn btn-primary btn-lg">
+                        <i class="bi bi-qr-code me-2"></i> Pagar com Pix
+                    </button>
+                    <button id="btn-show-card" class="btn btn-secondary btn-lg">
+                        <i class="bi bi-credit-card me-2"></i> Pagar com Cartão
+                    </button>
+                </div>
+            </div>
+
+            <!-- Seção do PIX (oculta por padrão) -->
+            <div id="pix-section" class="mt-4" style="display: none;">
+                <h2>Pague com Pix</h2>
+                <p>Escaneie o QR Code abaixo com o app do seu banco.</p>
+                <img src="QRcode exemplo.png" alt="QR Code para pagamento Pix" class="img-fluid border rounded p-2">
+            </div>
+
+            <!-- Seção do Cartão (oculta por padrão) -->
+            <div id="card-section" class="mt-4 text-start" style="display: none;">
+                <h2>Dados do Cartão</h2>
+                <form id="card-form">
+                    <div class="mb-3">
+                        <label for="card-number" class="form-label">Número do Cartão</label>
+                        <input type="text" id="card-number" class="form-control" placeholder="0000 0000 0000 0000" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="card-expiry" class="form-label">Validade</label>
+                            <input type="text" id="card-expiry" class="form-control" placeholder="MM/AA" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="card-cvc" class="form-label">CVC</label>
+                            <input type="text" id="card-cvc" class="form-control" placeholder="123" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="card-name" class="form-label">Nome do Titular</label>
+                        <input type="text" id="card-name" class="form-control" placeholder="Nome como no cartão" required>
+                    </div>
+                    <button type="submit" id="btn-save-card" class="btn btn-info w-100">Salvar Cartão</button>
+                </form>
+            </div>
+
+            <!-- Botão de Finalizar (oculto por padrão) -->
+            <div id="finalize-section" class="d-grid gap-2 mt-4" style="display: none;">
+                <button id="btn-finalize-order" class="btn btn-success btn-lg">Finalizar Pedido</button>
+            </div>
+
+            <div class="mt-4">
+                <a href="../carrinho/index.html" class="btn btn-link text-secondary">
+                    <i class="bi bi-arrow-left"></i> Voltar para o Carrinho
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <i class="bi bi-check-circle-fill display-1 text-success"></i>
+                    <h2 class="mt-3">Pedido Concluído!</h2>
+                    <p>Seu pedido foi realizado com sucesso. Você será redirecionado em breve.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html> 

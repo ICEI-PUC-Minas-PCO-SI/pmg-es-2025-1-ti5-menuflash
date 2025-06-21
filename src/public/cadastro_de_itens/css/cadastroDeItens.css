@@ -1,0 +1,99 @@
+.grupo {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+#divProtagonista {
+  width: 400px;
+  margin-bottom: 1rem;
+  /* espaçamento embaixo */
+}
+
+.textoProfile {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  margin-bottom: 0.5rem;
+}
+
+.inputsProtag {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.inputsProtag input[type="number"] {
+  width: 60px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(219, 219, 219);
+  border: none;
+  font-size: 1rem;
+}
+
+.loginProtag {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(219, 219, 219);
+  border: none;
+  font-size: 1rem;
+}
+
+
+
+#submit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.tituloProfile {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+
+#voltar {
+  position: absolute;
+  font-size: 25px;
+  right: 0;
+  padding: 20px;
+  color: black;
+}
+
+.input {
+  width: 400px;
+  padding: 10px;
+
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(219, 219, 219);
+  border: none;
+  font-size: 1rem;
+}
+
+#tituloPrincipal{
+  font-family: "Poppins", sans-serif;
+    margin-top: 7px;
+    font-weight: 200;
+    font-style: normal;
+    color: rgb(0, 0, 0);
+    font-size: 30px; 
+}

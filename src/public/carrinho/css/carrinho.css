@@ -1,0 +1,12 @@
+body {
+    background-color: #a10e0e;
+}
+.bg-white {
+    background: #fff !important;
+}
+#carrinho-itens .bg-light {
+    background: #f3f3f3 !important;
+}
+button {
+    min-width: 36px;
+} 

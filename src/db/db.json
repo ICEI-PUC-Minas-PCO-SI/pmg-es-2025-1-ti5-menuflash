@@ -1,25 +1,553 @@
 {
   "usuarios": [
     {
-      "id": 1,
-      "login": "admin",
-      "senha": "123",
-      "nome": "Administrador do Sistema",
-      "email": "admin@abc.com"
+      "id": "1",
+      "nome": "Lucas",
+      "email": "lucas@gmail.com",
+      "senha": "123456",
+      "historico_de_pedidos": [
+        {
+          "pedido_id": "1",
+          "lanchonete_id": "3",
+          "data": "2025-05-18",
+          "hora": "20:15:09",
+          "total": 16,
+          "forma_pagamento": "Pix",
+          "status": "Entregue",
+          "itens": [
+            {
+              "produto_id": "3",
+              "nome": "Coxinha",
+              "imagem": "../principal/img/itens/coxinha.png",
+              "quantidade": 2,
+              "preco_unitario": 6,
+              "subtotal": 12
+            },
+            {
+              "produto_id": "9",
+              "nome": "Trident",
+              "imagem": "../principal/img/itens/trident.png",
+              "quantidade": 2,
+              "preco_unitario": 2,
+              "subtotal": 4
+            }
+          ]
+        },
+        {
+          "pedido_id": "2",
+          "lanchonete_id": "2",
+          "data": "2025-05-20",
+          "hora": "13:30:57",
+          "total": 13,
+          "forma_pagamento": "Crédito",
+          "status": "Entregue",
+          "itens": [
+            {
+              "produto_id": "6",
+              "nome": "Pão de Queijo Recheado",
+              "imagem": "../principal/img/itens/paoDeQueijo.png",
+              "quantidade": 1,
+              "preco_unitario": 7.5,
+              "subtotal": 7.5
+            },
+            {
+              "produto_id": "7",
+              "nome": "Coca-Cola lata",
+              "imagem": "../principal/img/itens/cocaLata.png",
+              "quantidade": 1,
+              "preco_unitario": 5.5,
+              "subtotal": 5.5
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": 2,
-      "login": "user",
-      "senha": "123",
-      "nome": "Usuario Comum",
-      "email": "user@abc.com"
+      "id": "2",
+      "nome": "Cris",
+      "email": "cris@gmail.com",
+      "senha": "123456",
+      "tipo": "padrão",
+      "historico": [
+        {
+          "pedido_id": "1",
+          "lanchonete_id": "1",
+          "data": "2025-05-18",
+          "hora": "20:15:09",
+          "total": 19.5,
+          "forma_pagamento": "Pix",
+          "status": "Entregue",
+          "itens": [
+            {
+              "produto_id": "3",
+              "nome": "Coxinha",
+              "imagem": "../principal/img/itens/coxinha.png",
+              "quantidade": 2,
+              "preco_unitario": 6,
+              "subtotal": 12
+            },
+            {
+              "produto_id": "4",
+              "nome": "Suco de Laranja",
+              "imagem": "../principal/img/itens/",
+              "quantidade": 1,
+              "preco_unitario": 7.5,
+              "subtotal": 7.5
+            }
+          ]
+        },
+        {
+          "pedido_id": "2",
+          "lanchonete_id": "2",
+          "data": "2025-05-20",
+          "hora": "13:30:57",
+          "total": 13.5,
+          "forma_pagamento": "Crédito",
+          "status": "Entregue",
+          "itens": [
+            {
+              "produto_id": "6",
+              "nome": "Empada",
+              "imagem": "../principal/img/itens/empada.png",
+              "quantidade": 1,
+              "preco_unitario": 6.5,
+              "subtotal": 6.5
+            },
+            {
+              "produto_id": "8",
+              "nome": "Coca-Cola lata",
+              "imagem": "../principal/img/itens/cocaLata.png",
+              "quantidade": 1,
+              "preco_unitario": 7,
+              "subtotal": 7
+            }
+          ]
+        },
+        {
+          "pedido_id": "3",
+          "lanchonete_id": "1",
+          "data": "2025-06-01",
+          "hora": "18:45:34",
+          "total": 10,
+          "forma_pagamento": "Débito",
+          "status": "Entregue",
+          "itens": [
+            {
+              "produto_id": "9",
+              "nome": "Pão de Queijo",
+              "imagem": "../principal/img/itens/paoDeQueijo.png",
+              "quantidade": 1,
+              "preco_unitario": 4,
+              "subtotal": 4
+            },
+            {
+              "produto_id": "10",
+              "nome": "Suco Dell Vale",
+              "imagem": "../principal/img/itens/sucoLata.png",
+              "quantidade": 1,
+              "preco_unitario": 6,
+              "subtotal": 6
+            }
+          ]
+        }
+      ]
     },
     {
-      "login": "rommel",
-      "senha": "123",
-      "nome": "Rommel",
-      "email": "rommel@gmail.com",
-      "id": 3
+      "id": "3",
+      "nome": "Alan",
+      "email": "alan@gmail.com",
+      "senha": "123456",
+      "tipo": "administrador",
+      "lanchoneteId": "1"
+    },
+    {
+      "id": "4",
+      "nome": "Neymar",
+      "email": "neymar@gmail.com",
+      "senha": "123456",
+      "tipo": "administrador",
+      "lanchoneteId": "2"
+    },
+    {
+      "id": "5",
+      "nome": "usuario1",
+      "email": "usuario1@gmail.com",
+      "senha": "usuario1",
+      "tipo": "padrão",
+      "lanchoneteId": "3"
+    }
+  ],
+  "lanchonetes": [
+    {
+      "id": "1",
+      "nome": "Prédio 18",
+      "campus": "Coração Eucarístico",
+      "itens": [
+        {
+          "id": 1,
+          "titulo": "Água",
+          "descricao": "Água mineral natural, perfeita para manter a hidratação durante o dia.",
+          "valor": 3.5,
+          "conteudo": "500ml",
+          "imagem": "img/itens/agua.png",
+          "disponivel": true,
+          "favorito": false,
+          "quantidade": 17,
+          "semLactose": true,
+          "semGluten": true
+        },
+        {
+          "id": 2,
+          "titulo": "Guaraná lata",
+          "descricao": "Refrigerante de guaraná gelado, ideal para refrescar a qualquer momento.",
+          "valor": 5,
+          "conteudo": "350ml",
+          "imagem": "img/itens/guaranaLata.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 11,
+          "semLactose": true,
+          "semGluten": false
+        },
+        {
+          "id": 3,
+          "titulo": "Açaí",
+          "descricao": "Açaí na tigela, nutritivo e energético, ideal para um lanche saudável.",
+          "valor": 7,
+          "conteudo": "500ml",
+          "imagem": "img/itens/acai.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 9,
+          "semLactose": false,
+          "semGluten": true
+        },
+        {
+          "id": 4,
+          "titulo": "Coxinha",
+          "descricao": "Coxinha de frango com massa crocante e recheio cremoso, um clássico brasileiro.",
+          "valor": "",
+          "conteudo": "",
+          "disponivel": true,
+          "semLactose": false,
+          "semGluten": false,
+          "imagem": "img/itens/coxinha.png"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "nome": "Central",
+      "campus": "Coração Eucarístico",
+      "itens": [
+        {
+          "id": 5,
+          "titulo": "Pão de queijo",
+          "descricao": "Tradicional pão de queijo mineiro, crocante por fora e macio por dentro.",
+          "valor": 5.5,
+          "conteudo": "",
+          "imagem": "img/itens/paoDeQueijo.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 20,
+          "semLactose": false,
+          "semGluten": false
+        },
+        {
+          "id": 6,
+          "titulo": "Empada",
+          "descricao": "Empada salgada com recheio cremoso e massa leve, ótima para o lanche.",
+          "valor": 6.5,
+          "conteudo": "",
+          "imagem": "img/itens/empada.png",
+          "disponivel": true,
+          "favorito": false,
+          "quantidade": 5,
+          "semLactose": false,
+          "semGluten": false
+        },
+        {
+          "id": 7,
+          "titulo": "Coca-Cola lata",
+          "descricao": "Clássica Coca-Cola gelada na lata, ideal para acompanhar qualquer lanche.",
+          "valor": 5.5,
+          "conteudo": "350ml",
+          "imagem": "img/itens/cocaLata.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 13,
+          "semLactose": true,
+          "semGluten": true
+        },
+        {
+          "id": 8,
+          "titulo": "Sanduíche",
+          "descricao": "Sanduíche natural leve e saboroso, feito com ingredientes frescos.",
+          "valor": 7.5,
+          "conteudo": "",
+          "imagem": "img/itens/sanduiche.png",
+          "disponivel": true,
+          "favorito": false,
+          "quantidade": 6,
+          "semLactose": false,
+          "semGluten": false
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "nome": "Prédio 29",
+      "campus": "Coração Eucarístico",
+      "itens": [
+        {
+          "id": 9,
+          "titulo": "Trident",
+          "descricao": "Goma de mascar Trident, sabor refrescante para manter o hálito agradável.",
+          "valor": 2,
+          "conteudo": "",
+          "imagem": "img/itens/trident.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 19,
+          "semLactose": true,
+          "semGluten": true
+        },
+        {
+          "id": 10,
+          "titulo": "Trento",
+          "descricao": "Chocolate Trento crocante com recheio delicioso, perfeito para a sobremesa.",
+          "valor": 4.5,
+          "conteudo": "",
+          "imagem": "img/itens/trento.png",
+          "disponivel": true,
+          "favorito": false,
+          "quantidade": 7,
+          "semLactose": false,
+          "semGluten": false
+        },
+        {
+          "id": 11,
+          "titulo": "Suco lata",
+          "descricao": "Suco de frutas natural enlatado, refrescante e nutritivo.",
+          "valor": 5,
+          "conteudo": "400ml",
+          "imagem": "img/itens/sucoLata.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 18,
+          "semLactose": true,
+          "semGluten": true
+        },
+        {
+          "id": 12,
+          "titulo": "Coca-Cola 200ml",
+          "descricao": "Versão menor da Coca-Cola, ideal para quem quer refrescar com moderação.",
+          "valor": 4,
+          "conteudo": "200ml",
+          "imagem": "img/itens/coca.png",
+          "disponivel": false,
+          "favorito": false,
+          "quantidade": 4,
+          "semLactose": true,
+          "semGluten": true
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "nome": "Paçaki",
+      "campus": "Contagem",
+      "itens": [
+        {
+          "id": 1,
+          "titulo": "Água",
+          "descricao": "Água mineral natural, perfeita para manter a hidratação durante o dia.",
+          "valor": 3.5,
+          "conteudo": "500ml",
+          "imagem": "img/itens/agua.png",
+          "disponivel": true,
+          "favorito": false,
+          "quantidade": 17,
+          "semLactose": true,
+          "semGluten": true
+        },
+        {
+          "id": 2,
+          "titulo": "Guaraná lata",
+          "descricao": "Refrigerante de guaraná gelado, ideal para refrescar a qualquer momento.",
+          "valor": 5,
+          "conteudo": "350ml",
+          "imagem": "img/itens/guaranaLata.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 11,
+          "semLactose": true,
+          "semGluten": false
+        },
+        {
+          "id": 3,
+          "titulo": "Açaí",
+          "descricao": "Açaí na tigela, nutritivo e energético, ideal para um lanche saudável.",
+          "valor": 7,
+          "conteudo": "500ml",
+          "imagem": "img/itens/acai.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 9,
+          "semLactose": false,
+          "semGluten": true
+        },
+        {
+          "id": 4,
+          "titulo": "Coxinha",
+          "descricao": "Coxinha de frango com massa crocante e recheio cremoso, um clássico brasileiro.",
+          "valor": 6,
+          "conteudo": "",
+          "imagem": "img/itens/coxinha.png",
+          "disponivel": true,
+          "favorito": false,
+          "quantidade": 14,
+          "semLactose": false,
+          "semGluten": false
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "nome": "Paçaí",
+      "campus": "Contagem",
+      "itens": [
+        {
+          "id": 5,
+          "titulo": "Pão de queijo",
+          "descricao": "Tradicional pão de queijo mineiro, crocante por fora e macio por dentro.",
+          "valor": 5.5,
+          "conteudo": "",
+          "imagem": "img/itens/paoDeQueijo.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 20,
+          "semLactose": false,
+          "semGluten": false
+        },
+        {
+          "id": 6,
+          "titulo": "Empada",
+          "descricao": "Empada salgada com recheio cremoso e massa leve, ótima para o lanche.",
+          "valor": 6.5,
+          "conteudo": "",
+          "imagem": "img/itens/empada.png",
+          "disponivel": true,
+          "favorito": false,
+          "quantidade": 5,
+          "semLactose": false,
+          "semGluten": false
+        },
+        {
+          "id": 7,
+          "titulo": "Coca-Cola lata",
+          "descricao": "Clássica Coca-Cola gelada na lata, ideal para acompanhar qualquer lanche.",
+          "valor": 5.5,
+          "conteudo": "350ml",
+          "imagem": "img/itens/cocaLata.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 13,
+          "semLactose": true,
+          "semGluten": true
+        },
+        {
+          "id": 8,
+          "titulo": "Sanduíche",
+          "descricao": "Sanduíche natural leve e saboroso, feito com ingredientes frescos.",
+          "valor": 7.5,
+          "conteudo": "",
+          "imagem": "img/itens/sanduiche.png",
+          "disponivel": true,
+          "favorito": false,
+          "quantidade": 6,
+          "semLactose": false,
+          "semGluten": false
+        }
+      ]
+    }
+  ],
+  "carrinho": {
+    "id": 2,
+    "itens": [
+      {
+        "produto_id": "6",
+        "nome": "Pão de Queijo Recheado",
+        "imagem": "principal/img/itens/",
+        "quantidade": 1,
+        "preco_unitario": 7.5,
+        "subtotal": 7.5
+      },
+      {
+        "produto_id": "8",
+        "nome": "Refrigerante",
+        "imagem": "principal/img/itens/",
+        "quantidade": 1,
+        "preco_unitario": 7,
+        "subtotal": 7
+      }
+    ]
+  },
+  "campus": [
+    {
+      "nome": "PUC MINAS - Coração Eucarístico",
+      "mapa": "mapaCoreu.html",
+      "lanchonetes": [
+        {
+          "id": "1",
+          "nome": "Lanchonete Central"
+        },
+        {
+          "id": "2",
+          "nome": "Lanchonete Prédio 18"
+        },
+        {
+          "id": "3",
+          "nome": "Lanchonete Prédio 29"
+        }
+      ],
+      "id": "05c0"
+    },
+    {
+      "nome": "PUC MINAS - Contagem",
+      "mapa": "mapaContagem.html",
+      "lanchonetes": [
+        {
+          "id": "4",
+          "nome": "Lanchonete Praçaki"
+        },
+        {
+          "id": "5",
+          "nome": "Lanchonete Praçali"
+        }
+      ],
+      "id": "6da5"
+    }
+  ],
+  "avaliacoes": [
+    {
+      "id": "1",
+      "tipo": "lanchonete",
+      "referenciaId": 101,
+      "notas": [
+        5,
+        4,
+        3
+      ]
+    },
+    {
+      "id": "2",
+      "tipo": "item",
+      "referenciaId": 202,
+      "notas": [
+        4,
+        5
+      ]
     }
   ]
 }

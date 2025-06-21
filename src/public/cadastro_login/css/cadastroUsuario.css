@@ -1,0 +1,25 @@
+header > a{
+    text-decoration: none;
+}
+#voltar{
+    color: white;
+    font-size: 25px;
+    margin: 0;
+    padding: 20px;
+    
+}
+
+header{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+#mainCadastro{
+    max-width: 400px;
+    padding: 1rem;
+}
+
+html, body{
+    height: 100%;
+}

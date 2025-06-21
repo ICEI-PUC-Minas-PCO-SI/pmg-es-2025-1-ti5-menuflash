@@ -1,0 +1,25 @@
+header > a{
+    text-decoration: none;
+}
+#voltar{
+    color: rgb(0, 0, 0);
+    font-size: 25px;
+    margin: 0;
+    padding: 20px;
+    
+}
+
+header{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+#mainLogin{
+    max-width: 400px;
+    padding: 1rem;
+}
+
+html, body{
+    height: 100%;
+}
