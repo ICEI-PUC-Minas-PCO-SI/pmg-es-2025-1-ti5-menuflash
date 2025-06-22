@@ -71,7 +71,7 @@
                 <label for="inputEmail4" class="form-label">Id</label>
                 <input type="text" class="form-control" id="inputId" disabled>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="inputEmail4" class="form-label">Disponibilidade (*)</label>
                 <select class="form-select" name="" id="selectDisponivel">
                     <option value="disponivel">Disponível</option>
@@ -109,6 +109,15 @@
                 </div>
             </div>
 
+            <!-- Inserir imagem (a imagem não é inserida)-->
+            <div class="col-md-4">
+                <label for="inputImagem" class="form-label">Imagem (*)</label>
+                <input type="file" class="form-control" id="inputImagem" accept="image/*" required>
+
+                <img id="previewImagem" src="" alt="Pré-visualização" class="mt-2"
+                    style="max-height: 120px; display: none;">
+            </div>
+
             <div class="col-12">
                 <button id="btnAdicionar" type="button" class="btn btn-success">Adicionar</button>
                 <button id="btnEditar" type="button" class="btn btn-warning">Editar</button>
@@ -128,7 +137,6 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Disponivel</th>
-                            <th scope="col">Imagem</th>
                             <th scope="col">Titulo</th>
                             <th scope="col">Descrição</th>
                             <th scope="col">Valor</th>
@@ -140,7 +148,6 @@
                     <tbody id="tabelaFilmes">
                         <tr>
                             <th scope="row">1</th>
-                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -270,7 +277,6 @@
                 tr.innerHTML = `
         <td>${item.id}</td>
         <td>${item.disponivel ? 'Disponível' : 'Indisponível'}</td>
-        <td>${item.imagem || ''}</td>
         <td>${item.titulo}</td>
         <td>${item.descricao}</td>
         <td>${item.valor}</td>
@@ -303,8 +309,9 @@
                 disponivel: document.getElementById("selectDisponivel").value === 'disponivel',
                 semLactose: document.getElementById("opcaoA").checked,
                 semGluten: document.getElementById("opcaoB").checked,
-                imagem: ""
+                imagem: imagemBase64
             };
+
             cadastrarItem(novo, () => lerItens(renderTable));
         });
 
@@ -338,8 +345,31 @@
             document.getElementById("inputId").value = '';
         });
 
+        // Para funcionar a inserção de imagem
+
+        let imagemBase64 = ""; // variável global para guardar a imagem convertida
+
+        function handleImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                imagemBase64 = e.target.result;
+
+                // Mostra preview da imagem
+                const img = document.getElementById('previewImagem');
+                img.src = imagemBase64;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+        
+
         // 5) onload
         window.init = init;
+        document.getElementById('inputImagem').addEventListener('change', handleImageSelect);
+        
     </script>
 
 

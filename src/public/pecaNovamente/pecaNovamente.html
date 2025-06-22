@@ -13,34 +13,43 @@
 </head>
 
 <style>
-  body {
-    background-color: red;
+  .carrinho-icon {
+    position: relative;
+    cursor: pointer;
   }
 
-  body {
-    background-color: #a00000;
-  }
-
-  .logo-container {
-    flex: 1;
+  .carrinho-contador {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
     justify-content: center;
-  }
-
-  .logo-img {
-    max-height: 130px;
+    font-weight: bold;
+    border: 2px solid white;
   }
 </style>
+</head>
 
 <body>
-
-  <header class="bg-white py-3 px-4 d-flex align-items-center">
+  <header class=" py-3 px-4 d-flex align-items-center justify-content-between shadow-sm"
+    style="background-color: #a00000 !important;">
     <div class="logo-container">
-      <img src="assets/imgs/logoMenuFlash.png" alt="Logo Menu Flash" class="img-fluid logo-img">
+      <img src="../principal/img/logoMenuFlash.png" alt="Logo Menu Flash" class="img-fluid logo-img"
+        style="max-height: 80px;">
     </div>
-
-    <div class="fw-bold text-dark px-5">
-      <a href="login.html" class="text-decoration-none text-dark me-2">Entrar</a> |
-      <a href="cadastro.html" class="text-decoration-none text-dark ms-2">Cadastrar</a>
+    <div class="d-flex align-items-center">
+      <div class="fw-bold text-white px-5 d-flex gap-4" id="linksDoUsuario"></div>
+      <a href="../carrinho/index.html" class="carrinho-icon text-white text-decoration-none">
+        <i class="bi bi-cart3 fs-2"></i>
+        <span class="carrinho-contador" style="display: none;">0</span>
+      </a>
     </div>
   </header>
 
@@ -56,13 +65,7 @@
               <a class="nav-link text-dark" href="../principal/index.html">Alterar Campus</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark" href="#">Alterar Lanchonete</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="../pecaNovamente/pecaNovamente.html">Peça Novamente</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="">Histórico de pedidos</a>
+              <a class="nav-link text-dark active" href="../pecaNovamente/pecaNovamente.html">Peça Novamente</a>
             </li>
           </ul>
         </div>
@@ -71,116 +74,221 @@
 
     <!--CARDS-->
 
-    <h1 class="mb-0 text-center text-light pb-0 pt-4">Peça Novamente</h1>
-    <div id="pecaNovamente" class="container py-5 d-flex flex-column align-items-center mt-4">
-      <!-- cards de peça novamente -->
+    <h1 class="mb-0 text-center pb-0 pt-4">Peça Novamente</h1>
+    <div class="container py-4" id="pecaNovamente">
+      <!-- Header + cards serão inseridos aqui -->
     </div>
 
-    <script>
-      //alterar lanchonete na navbar
-      ddocument.addEventListener('DOMContentLoaded', () => {
-        const linkAlterarLanchonete = document.querySelector(".nav-link[href='#']");
-
-        const campus = sessionStorage.getItem("campusAtual");
-        const lanchoneteId = sessionStorage.getItem("lanchoneteAtualId");
-
-        if (linkAlterarLanchonete && campus) {
-          if (campus === "Coração Eucarístico") {
-            linkAlterarLanchonete.href = `../campus/campusCoreu.html`;
-          } else if (campus === "Contagem") {
-            linkAlterarLanchonete.href = `../campus/campusContagem.html`;
-          }
-        }
-
-        // Para voltar diretamente para os cards da lanchonete anterior:
-        const btnVoltarLanchonete = document.createElement("button");
-        btnVoltarLanchonete.className = "btn btn-warning mt-3";
-        btnVoltarLanchonete.textContent = "Voltar";
-
-        btnVoltarLanchonete.onclick = () => {
-          if (lanchoneteId && campus) {
-            window.location.href = `../criaCards.html?id=${lanchoneteId}&campus=${campus}`;
-          }
-        };
-
-        const container = document.getElementById("pecaNovamente");
-        if (container) {
-          container.appendChild(btnVoltarLanchonete);
-        }
-      });
-
-    </script>
+    <script src="../cadastro_login/js/inserirLogin.js"></script>
 
     <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const cardPecaNovamente = document.getElementById('pecaNovamente');
 
-      document.addEventListener('DOMContentLoaded', () => {
-        const cardPecaNovamente = document.getElementById("pecaNovamente");
-
-        // Pega o usuário logado do sessionStorage
+        // Busca o usuário logado do sessionStorage
         const usuarioLogadoJSON = sessionStorage.getItem('usuarioLogado');
         if (!usuarioLogadoJSON) {
-          alert("Você precisa estar logado para acessar esta página.");
-          window.location.href = "../cadastro_login/login.html";
-          return;
+          alert('Você precisa estar logado.');
+          return window.location.href = '../cadastro_login/login.html';
         }
-
         const usuario = JSON.parse(usuarioLogadoJSON);
         const usuario_id = usuario.usuario_id || usuario.id;
 
-        fetch('http://localhost:3000/usuarios')
-          .then(res => res.json())
-          .then(json => {
-            const usuarios = json.usuarios || json;
+        try {
+          // Busca todos os usuários cadastrados
+          const resUsers = await fetch('http://localhost:3000/usuarios');
+          const jsonUsers = await resUsers.json();
 
-            const usuarioEncontrado = usuarios.find(u => u.usuario_id == usuario_id || u.id == usuario_id);
-            if (!usuarioEncontrado) {
-              alert("Usuário não encontrado.");
-              return;
-            }
+          // Corrige estrutura caso jsonUsers esteja diretamente no array ou dentro de "usuarios"
+          const usuarios = jsonUsers.usuarios || jsonUsers;
+          const usuarioEncontrado = usuarios.find(u => u.usuario_id == usuario_id || u.id == usuario_id);
+          if (!usuarioEncontrado) throw new Error('Usuário não encontrado');
 
-            carregarPedidos(usuarioEncontrado);
-          })
-          .catch(error => {
-            console.error("Erro ao buscar usuários:", error);
-          });
-
-        function carregarPedidos(usuario) {
-          const pedidos = usuario.historico_de_pedidos || usuario.historico;
-
-          if (!pedidos || pedidos.length === 0) {
-            cardPecaNovamente.innerHTML = "<p class='text-white'>Você ainda não fez nenhum pedido.</p>";
+          // Seleciona o histórico de pedidos
+          const pedidos = usuarioEncontrado.historico_de_pedidos || [];
+          if (pedidos.length === 0) {
+            cardPecaNovamente.innerHTML = '<p class="text-white">Você ainda não fez nenhum pedido.</p>';
             return;
           }
 
+          // Ordena do mais recente para o mais antigo
           pedidos.sort((a, b) => new Date(`${b.data}T${b.hora}`) - new Date(`${a.data}T${a.hora}`));
-          const ultimoPedido = pedidos[0];
+          const ultimo = pedidos[0];
 
-          cardPecaNovamente.innerHTML = "";
+          // Header do pedido
+          cardPecaNovamente.innerHTML = '';
+          const header = document.createElement('div');
+          header.className = 'card-header text-light text-center p-2 mt-1';
+          header.style.backgroundColor = '#a00000';
+          header.style.maxWidth = '500px';
+          header.style.margin = '0 auto'; // Centraliza
+          header.innerHTML = `
+        <span>${usuario.nome} – Pedido #${ultimo.pedido_id} – ${ultimo.data} às ${ultimo.hora}</span>`;
+          cardPecaNovamente.appendChild(header);
 
-          ultimoPedido.itens.forEach(item => {
-            let cardHTML = `
-              <div class="card-header text-dark p-2 mt-3" style="background-color: #ffaf00;">
-                ${usuario.nome} – Pedido #${ultimoPedido.pedido_id} – ${ultimoPedido.data} às ${ultimoPedido.hora}
+          // Cria a linha para os cards
+          const row = document.createElement('div');
+          row.className = 'row justify-content-center w-100';
+          cardPecaNovamente.appendChild(row);
+
+          // Busca todas as lanchonetes (para encontrar os itens atuais)
+          const todosItensResponse = await fetch('http://localhost:3000/lanchonetes');
+          const todosItensJson = await todosItensResponse.json();
+          const todosItens = todosItensJson.itens || todosItensJson;
+
+          // Pega o carrinho atual do usuário
+          const carrinho = await getCarrinhoUsuario();
+          const itensCarrinho = carrinho?.itens || [];
+
+          // Gera os cards com base nos itens do último pedido
+          ultimo.itens.forEach(histItem => {
+            const realItem = todosItens.find(i => i.id === histItem.id);
+            const disponivel = realItem ? realItem.disponivel : true;
+            const itemData = realItem || histItem;
+
+            const quantidadeNoCarrinho = itensCarrinho.find(i => i.id === histItem.id)?.quantidade || 0;
+            const estiloIndisponivel = disponivel ? '' : 'style="filter: opacity(50%)"';
+            const botaoDesabilitado = disponivel ? '' : 'disabled';
+
+            // Criação do card do item
+            const col = document.createElement('div');
+            col.className = 'm-0 p-1 mt-2 col-md-3 col-sm-6 col-xs-8 d-flex';
+            col.innerHTML = `
+          <div class="card shadow rounded-4 border-0 overflow-hidden mx-auto" ${estiloIndisponivel} style="width: 320px;">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#modalExemplo" data-id="${itemData.id}">
+              <img src="${itemData.imagem}" class="card-img-top" alt="${itemData.titulo}" style="height:160px; object-fit:cover;">
+            </a>
+            <div class="card-body text-center d-flex flex-column px-3 py-3">
+              <h5 class="card-title fw-semibold text-truncate mb-2">${itemData.titulo}</h5>
+              <div class="avaliacao-estrelas mb-2" data-tipo="item" data-id="${itemData.id}">
+                ${[...Array(5)].map((_, i) => `<i class="fa-regular fa-star estrela text-warning" data-index="${i + 1}"></i>`).join('')}
               </div>
-              <div class="m-0 p-1 mt-2 col-md-3 col-sm-6 col-xs-8 d-flex">
-                <div class="card h-100 w-100 shadow-sm">     
-                  <img src="${item.imagem}" class="card-img-top" alt="${item.nome}">
-                  <div class="card-body text-center d-flex flex-column">
-                    <h5 class="card-title">${item.nome}</h5>
-                    <p>${item.quantidade} x R\$${item.preco_unitario.toFixed(2).replace('.', ',')}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <span class="fw-bold">R\$${item.subtotal.toFixed(2).replace('.', ',')}</span>
-                      <button disabled type="button" class="btn btn-outline-secondary btn-sm">Adicionar ao carrinho</button>
-                    </div>
-                  </div>
+              <div class="mt-auto pt-2 d-flex justify-content-between align-items-center">
+                <p class="fw-bold">${itemData.quantidade} x R\$${itemData.preco_unitario.toFixed(2).replace('.', ',')}</p>
+                <div class="input-group ms-2" style="max-width:130px;">
+                  <button ${botaoDesabilitado} class="btn btn-outline-danger btn-diminuir-qnt" data-item-id="${itemData.id}">−</button>
+                  <input type="text" readonly class="form-control text-center quantity-input" data-item-id="${itemData.id}" value="${quantidadeNoCarrinho}" style="max-width:50px;">
+                  <button ${botaoDesabilitado} class="btn btn-outline-success btn-aumentar-qnt" data-item-id="${itemData.id}">+</button>
                 </div>
               </div>
-            `;
-
-            cardPecaNovamente.innerHTML += cardHTML;
+            </div>
+          </div>`;
+            row.appendChild(col);
           });
+
+          // Eventos dos botões + e -
+          row.querySelectorAll('.btn-aumentar-qnt').forEach(btn => {
+            btn.addEventListener('click', async e => {
+              const id = +btn.dataset.itemId;
+              const item = ultimo.itens.find(i => i.id === id);
+              if (item) { await adicionarAoCarrinho(item); atualizar(id); }
+            });
+          });
+
+          row.querySelectorAll('.btn-diminuir-qnt').forEach(btn => {
+            btn.addEventListener('click', async e => {
+              const id = +btn.dataset.itemId;
+              const item = ultimo.itens.find(i => i.id === id);
+              if (item) { await removerUnidadeDoCarrinho(item); atualizar(id); }
+            });
+          });
+
+          // Atualiza o número no input de quantidade
+          function atualizar(id) {
+            getCarrinhoUsuario().then(c => {
+              const qty = c.itens.find(i => i.id === id)?.quantidade || 0;
+              const input = row.querySelector(`.quantity-input[data-item-id="${id}"]`);
+              if (input) input.value = qty;
+            });
+          }
+
+          // Estrelas de avaliação
+          row.querySelectorAll('.avaliacao-estrelas').forEach(c => {
+            inicializarEstrelasGenerico(c, 'avaliacaoItem_' + c.dataset.id);
+          });
+
+        } catch (err) {
+          console.error(err);
+          cardPecaNovamente.innerHTML = '<p class="text-danger">Erro ao carregar pedidos.</p>';
         }
       });
+
+      // Stub: substitua pelas suas funções reais
+      async function getCarrinhoUsuario() { return { itens: [] }; }
+      async function adicionarAoCarrinho(item) { console.log('Add', item.id); return; }
+      async function removerUnidadeDoCarrinho(item) { console.log('Remove', item.id); return; }
+      function inicializarEstrelasGenerico(container, key) { /* seu código de estrelas */ }
+
+
+
+      // document.addEventListener('DOMContentLoaded', () => {
+      // const cardPecaNovamente = document.getElementById("pecaNovamente");
+
+      // // Pega o usuário logado do sessionStorage
+      // const usuarioLogadoJSON = sessionStorage.getItem('usuarioLogado');
+      // if (!usuarioLogadoJSON) {
+      // alert("Você precisa estar logado para acessar esta página.");
+      // window.location.href = "../cadastro_login/login.html";
+      // return;
+      // }
+
+      // const usuario = JSON.parse(usuarioLogadoJSON);
+      // const usuario_id = usuario.usuario_id || usuario.id;
+
+      // fetch('http://localhost:3000/usuarios')
+      // .then(res => res.json())
+      // .then(json => {
+      // const usuarios = json.usuarios || json;
+
+      // const usuarioEncontrado = usuarios.find(u => u.usuario_id == usuario_id || u.id == usuario_id);
+      // if (!usuarioEncontrado) {
+      // alert("Usuário não encontrado.");
+      // return;
+      // }
+
+      // carregarPedidos(usuarioEncontrado);
+      // })
+      // .catch(error => {
+      // console.error("Erro ao buscar usuários:", error);
+      // });
+
+      // function carregarPedidos(usuario) {
+      // const pedidos = usuario.historico_de_pedidos || usuario.historico;
+
+      // if (!pedidos || pedidos.length === 0) {
+      // cardPecaNovamente.innerHTML = "<p class='text-white'>Você ainda não fez nenhum pedido.</p>";
+      // return;
+      // }
+
+      // pedidos.sort((a, b) => new Date(`${b.data}T${b.hora}`) - new Date(`${a.data}T${a.hora}`));
+      // const ultimoPedido = pedidos[0];
+
+      // cardPecaNovamente.innerHTML = "";
+
+      // ultimoPedido.itens.forEach(item => {
+      // let cardHTML = `
+      // <div class="card-header text-light p-2 mt-1" style="background-color: #a00000;">
+      // ${usuario.nome} – Pedido #${ultimoPedido.pedido_id} – ${ultimoPedido.data} às ${ultimoPedido.hora}
+      // </div>
+      // <div class="m-0 p-1 mt-2 col-md-3 col-sm-6 col-xs-8 d-flex">
+      // <div class="card h-100 w-100 shadow-sm">
+      // <img src="${item.imagem}" class="card-img-top" alt="${item.nome}">
+      // <div class="card-body text-center d-flex flex-column">
+      // <h5 class="card-title">${item.nome}</h5>
+      // <p>${item.quantidade} x R\$${item.preco_unitario.toFixed(2).replace('.', ',')}</p>
+      // <div class="d-flex justify-content-between align-items-center">
+      // <span class="fw-bold">R\$${item.subtotal.toFixed(2).replace('.', ',')}</span>
+      // <button disabled type="button" class="btn btn-outline-secondary btn-sm">Adicionar ao carrinho</button>
+      // </div>
+      // </div>
+      // </div>
+      // </div>
+      // `;
+
+      // cardPecaNovamente.innerHTML += cardHTML;
+      // });
+      // }
+      // });
 
     </script>
 

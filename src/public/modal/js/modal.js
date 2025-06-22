@@ -8,170 +8,62 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function mostraDetalhes(id) {
-    fetch('http://localhost:3000/lanchonetes')
-        .then(res => res.json())
-        .then(lanchonetes => {
-            for (let i = 0; i < lanchonetes.length; i++) {
-                let lanchonete = lanchonetes[i];
-                for (let j = 0; j < lanchonete.itens.length; j++) {
-                    let item = lanchonete.itens[j];
-                    if (item.id == id) {
-                        if (item.disponivel) {
-                            if (item.semGluten && item.semLactose) {
-                               let modalContent = `
-                                <div class="modal-header">
-                                    <div class="modal-title">Lanchonete - ${lanchonete.nome}
-                                        <h5 class="modal-title fs-2">${item.titulo}</h5>
-                                    </div>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <img src="${item.imagem}"class="img-fluid mb-2 w-75 h-25 d-block mx-auto" style="max-width: 20rem; max-height: 20rem; object-fit: contain;">
-                                    <p>${item.descricao}</p>
-                                        <div id="divQuantidade"> 
-                                        </div>
-                                        <p class="d-block p-3 mb-3">${item.conteudo}</p>
-                                    <div class="mb-2">
-                                        <span class="badge bg-success">Sem Lactose</span>
-                                        <span class="badge bg-success">Sem Glúten</span>
-                                    </div>
-                                <div class="modal-footer d-flex justify-content-between">
-                                <span class="fw-bold fs-5 text-dark">${item.valor}</span>
-                                    <div class="d-flex align-items-center gap-2"> 
-                                        <button type="button" class="btn btn-outline-secondary btn-sm">-</button>
-                                        <label>0</label>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm">+</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        ` 
-                        document.getElementById("modalContent").innerHTML = modalContent
-                        return;
-                            } else if (item.semLactose) {
-                                let modalContent = `
-                                <div class="modal-header">
-                                    <div class="modal-title">Lanchonete - ${lanchonete.nome}
-                                        <h5 class="modal-title fs-2">${item.titulo}</h5>
-                                    </div>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <img src="${item.imagem}"class="img-fluid mb-2 w-75 h-25 d-block mx-auto" style="max-width: 20rem; max-height: 20rem; object-fit: contain;">
-                                    <p>${item.descricao}</p>
-                                        <div id="divQuantidade"> 
-                                        <div class="mb-2">
-                                        <p class="d-block p-3 mb-3">${item.conteudo}</p>
-                                            <span class="badge bg-success">Sem Lactose</span>
-                                        </div>
-                                <div class="modal-footer d-flex justify-content-between">
-                                <span class="fw-bold fs-5 text-dark">${item.valor}</span>
-                                    <div class="d-flex align-items-center gap-2"> 
-                                        <button type="button" class="btn btn-outline-secondary btn-sm">-</button>
-                                        <label>0</label>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm">+</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        ` 
-                        document.getElementById("modalContent").innerHTML = modalContent
-                        return;
-                            } else if (item.semGluten) {
-                                let modalContent = `
-                                <div class="modal-header">
-                                    <div class="modal-title">Lanchonete - ${lanchonete.nome}
-                                        <h5 class="modal-title fs-2">${item.titulo}</h5>
-                                    </div>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <img src="${item.imagem}"class="img-fluid mb-2 w-75 h-25 d-block mx-auto" style="max-width: 20rem; max-height: 20rem; object-fit: contain;">
-                                    <p>${item.descricao}</p>
-                                        <div id="divQuantidade"> 
-                                        </div>
-                                        <p class="d-block p-3 mb-3">${item.conteudo}</p>
-                                    <div class="mb-2">
-                                        <span class="badge bg-success">Sem Glúten</span>
-                                    </div>
-                                <div class="modal-footer d-flex justify-content-between">
-                                <span class="fw-bold fs-5 text-dark">${item.valor}</span>
-                                    <div class="d-flex align-items-center gap-2"> 
-                                        <button type="button" class="btn btn-outline-secondary btn-sm">-</button>
-                                        <label>0</label>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm">+</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        ` 
-                        document.getElementById("modalContent").innerHTML = modalContent
-                        return;
-                            } else {
-                                let modalContent = `
-                                <div class="modal-header">
-                                    <div class="modal-title">Lanchonete - ${lanchonete.nome}
-                                        <h5 class="modal-title fs-2">${item.titulo}</h5>
-                                    </div>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <img src="${item.imagem}"class="img-fluid mb-2 w-75 h-25 d-block mx-auto" style="max-width: 20rem; max-height: 20rem; object-fit: contain;">
-                                    <p>${item.descricao}</p>
-                                        <div id="divQuantidade"> 
-                                        </div>
-                                        <p class="d-block p-3 mb-3">${item.conteudo}</p>
-                                <div class="modal-footer d-flex justify-content-between">
-                                <span class="fw-bold fs-5 text-dark">${item.valor}</span>
-                                    <div class="d-flex align-items-center gap-2"> 
-                                        <button type="button" class="btn btn-outline-secondary btn-sm">-</button>
-                                        <label>0</label>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm">+</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        ` 
-                        document.getElementById("modalContent").innerHTML = modalContent
-                        return;
-                            }
-                        } else {
-                            let modalContent = `
-                                <div class="modal-header">
-                                    <div class="modal-title">Lanchonete - ${lanchonete.nome}
-                                        <h5 class="modal-title fs-2">${item.titulo}</h5>
-                                    </div>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <img src="${item.imagem}"class="img-fluid mb-2 w-75 h-25 d-block mx-auto" style="max-width: 20rem; max-height: 20rem; object-fit: contain;">
-                                    <p>${item.descricao}</p>
-                                        <div id="divQuantidade"> 
-                                        </div>
-                                        <p class="d-block p-3 mb-3">${item.conteudo}</p>
-                                    <div class="mb-2">
-                                        <span class="badge bg-success">Sem Glúten</span>
-                                    </div>
-                                <div class="modal-footer d-flex justify-content-between">
-                                <span class="fw-bold fs-5 text-dark">${item.valor}</span>
-                                    <p>Item Indisponível</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        ` 
-                        document.getElementById("modalContent").innerHTML = modalContent
-                        return;
-                        }
-                    }
-                }
-            }
-        })
-        .catch(error => {
-            console.error("Erro ao carregar os dados:", error);
-        });
+  fetch('http://localhost:3000/lanchonetes')
+    .then(r => r.json())
+    .then(lanchonetes => {
+      let item, lan;
+      for (const l of lanchonetes) {
+        item = l.itens.find(i => i.id == id);
+        if (item) { lan = l; break; }
+      }
+      if (!item) return;
+
+      // 2. Calcula quantidade já no carrinho
+      const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+      const inCart = carrinho.find(i => i.id === item.id);
+      const qtd = inCart ? inCart.quantidade : 0;
+
+      // 3. Monta badges
+      const badges = [];
+      if (item.semLactose) badges.push(`<span class="badge bg-success">Sem Lactose</span>`);
+      if (item.semGluten)  badges.push(`<span class="badge bg-success">Sem Glúten</span>`);
+
+      // 4. Monta o modal de forma única
+      const modalContent = `
+        <div class="modal-header">
+          <h5 class="modal-title">Lanchonete ${lan.nome} — ${item.titulo}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img src="${item.imagem}" class="img-fluid mb-3" style="max-height:200px;object-fit:contain;">
+          <p>${item.descricao}</p>
+          <p>${item.conteudo}</p>
+          ${badges.join(' ')}
+        </div>
+        <div class="modal-footer d-flex justify-content-between align-items-center">
+          <h5><strong>R$ ${typeof item.valor === 'number' ? item.valor.toFixed(2).replace('.', ',') : 'N/A'}</strong><h5>
+          <div class="d-flex align-items-center">
+          </div>
+        </div>
+      `;
+      const container = document.getElementById("modalContent");
+      container.innerHTML = modalContent;
+
+
+      function atualizaQtd() {
+        const c = JSON.parse(localStorage.getItem('carrinho')) || [];
+        const found = c.find(i => i.id == item.id);
+        labelQ.textContent = found ? found.quantidade : 0;
+      }
+
+      btnMais.addEventListener('click', () => {
+        adicionarAoCarrinho(item);
+        atualizaQtd();
+      });
+      btnMenos.addEventListener('click', () => {
+        removerUnidadeDoCarrinho(item);
+        atualizaQtd();
+      });
+    })
+    .catch(console.error);
 }

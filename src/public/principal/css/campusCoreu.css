@@ -33,3 +33,7 @@ header{
   color: #a00000;
   border-color: white;
 }
+
+#botoesLanchonete button {
+  min-width: 15rem;
+}

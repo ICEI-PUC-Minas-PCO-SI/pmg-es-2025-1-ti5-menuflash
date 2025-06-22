@@ -7,28 +7,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const observacaoEl = document.getElementById('observacao');
     const btnFinalizar = document.getElementById('btn-finalizar-pedido');
     const btnLimpar = document.getElementById('btn-limpar-carrinho');
+    const userId = "1"; // ID do usuário fixo
 
-    const getCarrinho = () => JSON.parse(localStorage.getItem('carrinho')) || [];
-    const setCarrinho = (carrinho) => {
-        localStorage.setItem('carrinho', JSON.stringify(carrinho));
-        // Dispara um evento customizado para notificar outras partes da aplicação (como o header)
-        window.dispatchEvent(new Event('storageChanged'));
-    };
-    
     const formatarMoeda = (valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    const renderizarItens = () => {
-        const carrinho = getCarrinho();
+    const getCarrinho = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/carrinhos?userId=${userId}`);
+            const carrinhos = await response.json();
+            return carrinhos[0];
+        } catch (error) {
+            console.error("Erro ao buscar carrinho:", error);
+            return null;
+        }
+    };
+    
+    const atualizarCarrinhoServidor = async (carrinho) => {
+        if (!carrinho) return;
+        try {
+            await fetch(`http://localhost:3000/carrinhos/${carrinho.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(carrinho)
+            });
+            window.dispatchEvent(new Event('cartUpdated'));
+        } catch (error) {
+            console.error("Erro ao atualizar carrinho:", error);
+        }
+    };
+
+    const renderizarItens = (carrinho) => {
         itensContainer.innerHTML = '';
 
-        if (carrinho.length === 0) {
+        if (!carrinho || carrinho.itens.length === 0) {
             carrinhoVazioEl.style.display = 'block';
+            subtotalEl.textContent = formatarMoeda(0);
+            totalEl.textContent = formatarMoeda(0);
             return;
         }
         
         carrinhoVazioEl.style.display = 'none';
 
-        carrinho.forEach(item => {
+        carrinho.itens.forEach(item => {
             const itemEl = document.createElement('div');
             itemEl.className = 'item-carrinho d-flex justify-content-between align-items-center p-3 border-bottom';
             const itemPreco = typeof item.valor === 'string' 
@@ -56,9 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const renderizarResumo = () => {
-        const carrinho = getCarrinho();
-        const subtotal = carrinho.reduce((acc, item) => {
+    const renderizarResumo = (carrinho) => {
+        if (!carrinho || carrinho.itens.length === 0) return;
+
+        const subtotal = carrinho.itens.reduce((acc, item) => {
             const preco = typeof item.valor === 'string'
                 ? parseFloat(item.valor.replace('R$', '').replace(',', '.'))
                 : item.valor;
@@ -69,29 +90,33 @@ document.addEventListener('DOMContentLoaded', () => {
         totalEl.textContent = formatarMoeda(subtotal);
     };
 
-    const atualizarItem = (itemId, novaQuantidade) => {
-        let carrinho = getCarrinho();
-        const item = carrinho.find(i => i.id === itemId);
+    const atualizarItem = async (itemId, novaQuantidade) => {
+        const carrinho = await getCarrinho();
+        if (!carrinho) return;
+        const item = carrinho.itens.find(i => i.id === itemId);
         if (item) {
             item.quantidade = novaQuantidade;
-            setCarrinho(carrinho);
-            renderizarItens();
-            renderizarResumo();
+            await atualizarCarrinhoServidor(carrinho);
+            init(); // Recarrega a tela
         }
     };
 
-    const removerItem = (itemId) => {
-        let carrinho = getCarrinho().filter(i => i.id !== itemId);
-        setCarrinho(carrinho);
-        renderizarItens();
-        renderizarResumo();
+    const removerItem = async (itemId) => {
+        const carrinho = await getCarrinho();
+        if (!carrinho) return;
+        carrinho.itens = carrinho.itens.filter(i => i.id !== itemId);
+        await atualizarCarrinhoServidor(carrinho);
+        init(); // Recarrega a tela
     };
 
-    const limparCarrinho = () => {
+    const limparCarrinho = async () => {
         if (confirm('Tem certeza que deseja limpar o carrinho?')) {
-            setCarrinho([]);
-            renderizarItens();
-            renderizarResumo();
+            const carrinho = await getCarrinho();
+            if(carrinho) {
+                carrinho.itens = [];
+                await atualizarCarrinhoServidor(carrinho);
+            }
+            init(); // Recarrega a tela
         }
     };
 
@@ -119,39 +144,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnLimpar.addEventListener('click', limparCarrinho);
 
-    btnFinalizar.addEventListener('click', () => {
-        const carrinho = getCarrinho();
-        if (carrinho.length === 0) {
+    btnFinalizar.addEventListener('click', async () => {
+        const carrinho = await getCarrinho();
+        if (!carrinho || carrinho.itens.length === 0) {
             alert('Seu carrinho está vazio!');
             return;
         }
         
-        // 1. Cria um objeto de pedido pendente
         const pedidoPendente = {
-            id: `pedido_${new Date().getTime()}`, // ID único para o pedido
-            itens: carrinho,
+            id: `pedido_${new Date().getTime()}`,
+            itens: carrinho.itens,
             observacao: observacaoEl.value,
             data: new Date().toISOString(),
             status: 'pendente'
         };
 
-        // 2. Salva o pedido pendente no localStorage para a pág. de pagamento pegar
         localStorage.setItem('pedidoPendente', JSON.stringify(pedidoPendente));
-
-        // 3. Redireciona para a página de pagamento
         window.location.href = '../forma-pagamento/index.html';
     });
 
-    // Ouve por mudanças no localStorage para manter a aba atualizada
-    window.addEventListener('storage', () => {
-        renderizarItens();
-        renderizarResumo();
+    window.addEventListener('cartUpdated', () => {
+        init();
     });
 
     // Função de inicialização
-    const init = () => {
-        renderizarItens();
-        renderizarResumo();
+    const init = async () => {
+        const carrinho = await getCarrinho();
+        renderizarItens(carrinho);
+        renderizarResumo(carrinho);
         observacaoEl.value = localStorage.getItem('observacao') || '';
         observacaoEl.addEventListener('keyup', () => {
             localStorage.setItem('observacao', observacaoEl.value);

@@ -27,45 +27,87 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- ESTADO ---
     let todosOsItens = [];
+    const userId = "1"; // ID do usuário fixo para fins de demonstração
 
     // --- LÓGICA DO CARRINHO ---
-    const adicionarAoCarrinho = (item) => {
-        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-        const itemExistente = carrinho.find(i => i.id === item.id);
-
-        if (itemExistente) {
-            itemExistente.quantidade++;
-        } else {
-            const itemParaCarrinho = {
-                id: item.id,
-                nome: item.titulo,
-                imagem: item.imagem,
-                valor: String(item.valor),
-                nomeLanchonete: item.nomeLanchonete,
-                quantidade: 1
-            };
-            carrinho.push(itemParaCarrinho);
-            mostrarFeedbackAdicionado(item.titulo);
+    const getCarrinhoUsuario = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/carrinhos?userId=${userId}`);
+            const carrinhos = await response.json();
+            return carrinhos[0]; // Retorna o primeiro carrinho encontrado para o usuário
+        } catch (error) {
+            console.error("Erro ao buscar carrinho:", error);
+            return null;
         }
-
-        localStorage.setItem('carrinho', JSON.stringify(carrinho));
-        window.dispatchEvent(new Event('storageChanged'));
     };
 
-    const removerUnidadeDoCarrinho = (item) => {
-        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-        const itemIndex = carrinho.findIndex(i => i.id === item.id);
+    const criarCarrinhoUsuario = async (carrinho) => {
+        try {
+            await fetch(`http://localhost:3000/carrinhos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(carrinho)
+            });
+        } catch (error) {
+            console.error("Erro ao criar carrinho:", error);
+        }
+    };
+
+    const atualizarCarrinhoUsuario = async (carrinho) => {
+        try {
+            await fetch(`http://localhost:3000/carrinhos/${carrinho.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(carrinho)
+            });
+        } catch (error) {
+            console.error("Erro ao atualizar carrinho:", error);
+        }
+    };
+
+    const adicionarAoCarrinho = async (item) => {
+        let carrinho = await getCarrinhoUsuario();
+        const itemParaCarrinho = {
+            id: item.id,
+            nome: item.titulo,
+            imagem: item.imagem,
+            valor: String(item.valor),
+            nomeLanchonete: item.nomeLanchonete,
+            quantidade: 1
+        };
+
+        if (carrinho) {
+            const itemExistente = carrinho.itens.find(i => i.id === item.id);
+            if (itemExistente) {
+                itemExistente.quantidade++;
+            } else {
+                carrinho.itens.push(itemParaCarrinho);
+            }
+            await atualizarCarrinhoUsuario(carrinho);
+        } else {
+            carrinho = { userId, itens: [itemParaCarrinho] };
+            await criarCarrinhoUsuario(carrinho);
+        }
+        mostrarFeedbackAdicionado(item.titulo);
+        window.dispatchEvent(new Event('cartUpdated'));
+    };
+
+    const removerUnidadeDoCarrinho = async (item) => {
+        let carrinho = await getCarrinhoUsuario();
+        if (!carrinho) return;
+
+        const itemIndex = carrinho.itens.findIndex(i => i.id === item.id);
     
         if (itemIndex > -1) {
-            const itemExistente = carrinho[itemIndex];
+            const itemExistente = carrinho.itens[itemIndex];
             itemExistente.quantidade--;
     
             if (itemExistente.quantidade <= 0) {
-                carrinho.splice(itemIndex, 1);
+                carrinho.itens.splice(itemIndex, 1);
             }
     
-            localStorage.setItem('carrinho', JSON.stringify(carrinho));
-            window.dispatchEvent(new Event('storageChanged'));
+            await atualizarCarrinhoUsuario(carrinho);
+            window.dispatchEvent(new Event('cartUpdated'));
         }
     };
 
@@ -112,78 +154,83 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        getCarrinhoUsuario().then(carrinho => {
+            const itensCarrinho = carrinho ? carrinho.itens : [];
 
-        itens.forEach(item => {
-            const estiloIndisponivel = !item.disponivel ? 'style="filter: opacity(50%);"' : '';
-            const botaoDesabilitado = !item.disponivel ? 'disabled' : '';
+            itens.forEach(item => {
+                const estiloIndisponivel = !item.disponivel ? 'style="filter: opacity(50%);"' : '';
+                const botaoDesabilitado = !item.disponivel ? 'disabled' : '';
 
-            const itemNoCarrinho = carrinho.find(i => i.id === item.id);
-            const quantidadeNoCarrinho = itemNoCarrinho ? itemNoCarrinho.quantidade : 0;
+                const itemNoCarrinho = itensCarrinho.find(i => i.id === item.id);
+                const quantidadeNoCarrinho = itemNoCarrinho ? itemNoCarrinho.quantidade : 0;
 
-            const cardWrapper = document.createElement('div');
-            cardWrapper.className = "m-0 p-1 mt-2 col-md-3 col-sm-6 col-xs-8 d-flex";
-            cardWrapper.innerHTML = `
-                <div class="card shadow rounded-4 border-0 overflow-hidden mx-auto" ${estiloIndisponivel} style="width: 320px; transition: transform 0.3s;">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#modalExemplo" data-id="${item.id}">
-                    <img src="${item.imagem}" class="card-img-top" alt="${item.titulo}" style="height: 160px; object-fit: cover;">
-                </a>
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = "m-0 p-1 mt-2 col-md-3 col-sm-6 col-xs-8 d-flex";
+                cardWrapper.innerHTML = `
+                    <div class="card shadow rounded-4 border-0 overflow-hidden mx-auto" ${estiloIndisponivel} style="width: 320px; transition: transform 0.3s;">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalExemplo" data-id="${item.id}">
+                        <img src="${item.imagem}" class="card-img-top" alt="${item.titulo}" style="height: 160px; object-fit: cover;">
+                    </a>
 
-                <div class="card-body text-center d-flex flex-column px-3 py-3">
-                    <h5 class="card-title fw-semibold text-truncate mb-2" title="${item.titulo}">${item.titulo}</h5>
+                    <div class="card-body text-center d-flex flex-column px-3 py-3">
+                        <h5 class="card-title fw-semibold text-truncate mb-2" title="${item.titulo}">${item.titulo}</h5>
 
-                    <div class="avaliacao-estrelas mb-2" data-tipo="item" data-id="${item.id}">
-                        ${[...Array(5)].map((_, i) => `<i class="fa-regular fa-star estrela" data-index="${i+1}"></i>`).join('')}
-                    </div>
+                        <div class="avaliacao-estrelas mb-2" data-tipo="item" data-id="${item.id}">
+                            ${[...Array(5)].map((_, i) => `<i class="fa-regular fa-star estrela" data-index="${i+1}"></i>`).join('')}
+                        </div>
 
-                    <div class="mt-auto pt-2">
-                         <p class="fw-bold h5">R$ ${typeof item.valor === 'number' ? item.valor.toFixed(2).replace('.', ',') : 'N/A'}</p>
-                        <div class="input-group justify-content-center" ${estiloIndisponivel}>
-                            <button ${botaoDesabilitado} class="btn btn-outline-danger btn-diminuir-qnt" type="button" data-item-id="${item.id}">-</button>
-                            <input type="text" class="form-control text-center quantity-input" value="${quantidadeNoCarrinho}" readonly data-item-id="${item.id}" style="max-width: 50px; user-select: none; background-color: #fff;">
-                            <button ${botaoDesabilitado} class="btn btn-outline-success btn-aumentar-qnt" type="button" data-item-id="${item.id}">+</button>
+                        <div class="mt-auto pt-2 d-flex justify-content-between align-items-center">
+                            <p class="fw-bold h5 mb-0 mx-2">R$ ${typeof item.valor === 'number' ? item.valor.toFixed(2).replace('.', ',') : 'N/A'}</p>
+                            
+                            <div class="input-group ms-2" style="max-width: 130px;" ${estiloIndisponivel}>
+                                <button ${botaoDesabilitado} class="btn btn-outline-danger btn-diminuir-qnt" type="button" data-item-id="${item.id}">−</button>
+                                <input type="text" class="form-control text-center quantity-input" value="${quantidadeNoCarrinho}" readonly data-item-id="${item.id}" style="max-width: 50px; user-select: none; background-color: #fff;">
+                                <button ${botaoDesabilitado} class="btn btn-outline-success btn-aumentar-qnt" type="button" data-item-id="${item.id}">+</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            `;
-            containerParaRenderizar.appendChild(cardWrapper);
-        });
-
-        const atualizarDisplayQuantidade = (itemId) => {
-            const input = containerParaRenderizar.querySelector(`.quantity-input[data-item-id='${itemId}']`);
-            if (input) {
-                const carrinhoAtualizado = JSON.parse(localStorage.getItem('carrinho')) || [];
-                const itemNoCarrinho = carrinhoAtualizado.find(i => i.id === itemId);
-                input.value = itemNoCarrinho ? itemNoCarrinho.quantidade : 0;
-            }
-        };
-
-        containerParaRenderizar.querySelectorAll(".btn-aumentar-qnt").forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const itemId = parseInt(e.currentTarget.dataset.itemId, 10);
-                const item = todosOsItens.find(i => i.id === itemId);
-                if (item) {
-                    adicionarAoCarrinho(item);
-                    atualizarDisplayQuantidade(itemId);
-                }
+                `;
+                containerParaRenderizar.appendChild(cardWrapper);
             });
-        });
 
-        containerParaRenderizar.querySelectorAll(".btn-diminuir-qnt").forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const itemId = parseInt(e.currentTarget.dataset.itemId, 10);
-                const item = todosOsItens.find(i => i.id === itemId);
-                if (item) {
-                    removerUnidadeDoCarrinho(item);
-                    atualizarDisplayQuantidade(itemId);
+            const atualizarDisplayQuantidade = async (itemId) => {
+                const input = containerParaRenderizar.querySelector(`.quantity-input[data-item-id='${itemId}']`);
+                if (input) {
+                    const carrinhoAtualizado = await getCarrinhoUsuario();
+                    const itemNoCarrinho = carrinhoAtualizado ? carrinhoAtualizado.itens.find(i => i.id === itemId) : null;
+                    input.value = itemNoCarrinho ? itemNoCarrinho.quantidade : 0;
                 }
-            });
-        });
+            };
 
-        containerParaRenderizar.querySelectorAll(".avaliacao-estrelas[data-tipo='item']").forEach(container => {
-            const itemId = container.dataset.id;
-            inicializarEstrelasGenerico(container, `avaliacaoItem_${itemId}`);
+            containerParaRenderizar.querySelectorAll(".btn-aumentar-qnt").forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.currentTarget.dataset.itemId, 10);
+                    const item = todosOsItens.find(i => i.id === itemId);
+                    if (item) {
+                        adicionarAoCarrinho(item).then(() => {
+                            atualizarDisplayQuantidade(itemId);
+                        });
+                    }
+                });
+            });
+
+            containerParaRenderizar.querySelectorAll(".btn-diminuir-qnt").forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.currentTarget.dataset.itemId, 10);
+                    const item = todosOsItens.find(i => i.id === itemId);
+                    if (item) {
+                        removerUnidadeDoCarrinho(item).then(() => {
+                            atualizarDisplayQuantidade(itemId);
+                        });
+                    }
+                });
+            });
+
+            containerParaRenderizar.querySelectorAll(".avaliacao-estrelas[data-tipo='item']").forEach(container => {
+                const itemId = container.dataset.id;
+                inicializarEstrelasGenerico(container, `avaliacaoItem_${itemId}`);
+            });
         });
     }
 

@@ -1,18 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- ELEMENTOS DO DOM ---
-    const initialChoiceEl = document.getElementById('initial-choice');
     const pixSectionEl = document.getElementById('pix-section');
     const cardSectionEl = document.getElementById('card-section');
-    const finalizeSectionEl = document.getElementById('finalize-section');
-    
-    const btnShowPix = document.getElementById('btn-show-pix');
-    const btnShowCard = document.getElementById('btn-show-card');
+
     const btnFinalizeOrder = document.getElementById('btn-finalize-order');
-    const cardForm = document.getElementById('card-form');
+
+    const radioPix = document.getElementById('payment-pix');
+    const radioCard = document.getElementById('payment-card');
 
     const orderSummaryEl = document.getElementById('order-summary');
-    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
 
     // --- CONFIGURAÇÃO E ESTADO ---
     const jsonServerUrl = 'http://localhost:3000';
@@ -55,88 +52,122 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
 
-    const salvarCartao = async (event) => {
-        event.preventDefault(); // Impede o recarregamento da página
-        const newCard = {
-            numero: document.getElementById('card-number').value,
-            validade: document.getElementById('card-expiry').value,
-            cvc: document.getElementById('card-cvc').value,
-            nome: document.getElementById('card-name').value,
-        };
-
-        try {
-            const response = await fetch(`${jsonServerUrl}/cartoes`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newCard),
-            });
-            if (!response.ok) throw new Error('Falha ao salvar o cartão.');
-            
-            alert('Cartão salvo com sucesso!');
-            cardForm.reset();
-
-        } catch (error) {
-            console.error('Erro ao salvar cartão:', error);
-            alert('Não foi possível salvar o cartão. Tente novamente.');
-        }
-    };
-
-    const finalizarPedido = async () => {
+    const finalizarPedido = () => {
         if (!metodoPagamentoSelecionado) {
             alert('Por favor, selecione um método de pagamento.');
             return;
         }
 
-        const pedidoFinal = {
-            ...pedidoPendente,
-            metodoPagamento: metodoPagamentoSelecionado,
-            status: 'concluido'
-        };
-
-        try {
-            const response = await fetch(`${jsonServerUrl}/pedidos`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(pedidoFinal),
-            });
-            if (!response.ok) throw new Error('Falha ao salvar o pedido.');
-
-            localStorage.removeItem('carrinho');
-            localStorage.removeItem('pedidoPendente');
-            window.dispatchEvent(new Event('storageChanged'));
-
-            confirmationModal.show();
-            setTimeout(() => { window.location.href = '../principal/index.html'; }, 3000);
-
-        } catch (error) {
-            console.error('Erro ao finalizar o pedido:', error);
-            alert('Não foi possível concluir seu pedido. Tente novamente.');
+        const usuarioStr = sessionStorage.getItem('usuarioLogado');
+        if (!usuarioStr) {
+            alert('Usuário não está logado.');
+            return;
         }
+        const usuarioLogado = JSON.parse(usuarioStr);
+
+        // 1) Busca o usuário para pegar o histórico atual
+        fetch(`${jsonServerUrl}/usuarios/${usuarioLogado.id}`)
+            .then(res => {
+                if (!res.ok) throw new Error('Falha ao buscar usuário');
+                return res.json();
+            })
+            .then(usuario => {
+                const historicoAtual = Array.isArray(usuario.historico_de_pedidos)
+                    ? usuario.historico_de_pedidos
+                    : [];
+
+                // 2) Busca as lanchonetes pra descobrir o nome da que o cliente comprou
+                return fetch(`${jsonServerUrl}/lanchonetes`)
+                    .then(res2 => {
+                        if (!res2.ok) throw new Error('Falha ao buscar lanchonetes');
+                        return res2.json();
+                    })
+                    .then(lanchonetes => {
+                        // encontra pelo ID
+                        const lanche = lanchonetes.find(l => String(l.id) === String(pedidoPendente.lanchonete_id));
+                        const nomeLanchonete = lanche ? lanche.nome : 'Desconhecida';
+
+                        // monta data e hora
+                        const agora = new Date();
+                        const data = agora.toISOString().split('T')[0];
+                        const hora = agora.toTimeString().slice(0, 5);
+
+                        // total
+                        const total = pedidoPendente.itens.reduce((acc, i) => {
+                            const preco = parseFloat(i.valor.replace('R$', '').replace(',', '.'));
+                            return acc + (preco * i.quantidade);
+                        }, 0);
+
+                        // corrige caminho das imagens e monta itens
+                        const itensParaHistorico = pedidoPendente.itens.map(i => {
+                            const src = i.imagem.startsWith('img/')
+                                ? `../principal/${i.imagem}`
+                                : i.imagem;
+                            return {
+                                nome: i.nome,
+                                quantidade: i.quantidade,
+                                imagem: src,
+                                subtotal: parseFloat(i.valor.replace('R$', '').replace(',', '.')) * i.quantidade
+                            };
+                        });
+
+                        // 3) Monta o novo registro **incluindo** o nome da lanchonete
+                        const novoRegistro = {
+                            pedido_id: Date.now(),
+                            lanchonete_id: pedidoPendente.lanchonete_id,
+                            lanchonete_nome: nomeLanchonete,     // <<< aqui!
+                            data,
+                            hora,
+                            total,
+                            itens: itensParaHistorico,
+                            status: 'Concluído',
+                            forma_pagamento: metodoPagamentoSelecionado
+                        };
+
+                        // 4) Retorna o PATCH para anexar ao histórico
+                        return fetch(`${jsonServerUrl}/usuarios/${usuario.id}`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                historico_de_pedidos: [...historicoAtual, novoRegistro]
+                            })
+                        });
+                    });
+            })
+            .then(resPatch => {
+                if (!resPatch.ok) throw new Error('Falha ao atualizar histórico');
+                // 5) Limpa e redireciona
+                localStorage.removeItem('carrinho');
+                localStorage.removeItem('pedidoPendente');
+                window.dispatchEvent(new Event('storageChanged'));
+                window.location.href = '../acompanhar-pedido/acompanhar-pedido.html';
+            })
+            .catch(err => {
+                console.error('Erro ao finalizar pedido:', err);
+                alert('Ocorreu um erro ao finalizar o pedido. Tente novamente mais tarde.');
+            });
     };
 
     // --- EVENT LISTENERS ---
-    btnShowPix.addEventListener('click', () => {
+    radioPix.addEventListener('change', () => {
         metodoPagamentoSelecionado = 'Pix';
-        initialChoiceEl.style.display = 'none';
         cardSectionEl.style.display = 'none';
         pixSectionEl.style.display = 'block';
-        finalizeSectionEl.style.display = 'block';
+        btnFinalizeOrder.disabled = false;
     });
 
-    btnShowCard.addEventListener('click', () => {
+    radioCard.addEventListener('change', () => {
         metodoPagamentoSelecionado = 'Cartão';
-        initialChoiceEl.style.display = 'none';
         pixSectionEl.style.display = 'none';
         cardSectionEl.style.display = 'block';
-        finalizeSectionEl.style.display = 'block';
+        btnFinalizeOrder.disabled = false;
     });
 
-    cardForm.addEventListener('submit', salvarCartao);
     btnFinalizeOrder.addEventListener('click', finalizarPedido);
 
     // --- INICIALIZAÇÃO ---
     carregarPedido();
-    if(pedidoPendente) {
+    if (pedidoPendente) {
         renderizarResumo();
     }
 }); 

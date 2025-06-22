@@ -11,21 +11,33 @@
           "lanchonete_id": "3",
           "data": "2025-05-18",
           "hora": "20:15:09",
-          "total": 16,
+          "total": 17,
           "forma_pagamento": "Pix",
           "status": "Entregue",
           "itens": [
             {
-              "produto_id": "3",
-              "nome": "Coxinha",
+              "id": 4,
+              "titulo": "Coxinha",
+              "descricao": "Coxinha de frango com massa crocante e recheio cremoso, um clássico brasileiro.",
+              "conteudo": "",
+              "disponivel": true,
+              "favorito": true,
+              "semLactose": false,
+              "semGluten": false,
               "imagem": "../principal/img/itens/coxinha.png",
               "quantidade": 2,
-              "preco_unitario": 6,
-              "subtotal": 12
+              "preco_unitario": 6.5,
+              "subtotal": 13
             },
             {
-              "produto_id": "9",
-              "nome": "Trident",
+              "id": 9,
+              "titulo": "Trident",
+              "descricao": "Goma de mascar Trident, sabor refrescante para manter o hálito agradável.",
+              "conteudo": "",
+              "disponivel": true,
+              "favorito": true,
+              "semLactose": true,
+              "semGluten": true,
               "imagem": "../principal/img/itens/trident.png",
               "quantidade": 2,
               "preco_unitario": 2,
@@ -38,21 +50,33 @@
           "lanchonete_id": "2",
           "data": "2025-05-20",
           "hora": "13:30:57",
-          "total": 13,
+          "total": 11,
           "forma_pagamento": "Crédito",
           "status": "Entregue",
           "itens": [
             {
-              "produto_id": "6",
-              "nome": "Pão de Queijo Recheado",
+              "id": 5,
+              "titulo": "Pão de queijo",
+              "descricao": "Tradicional pão de queijo mineiro, crocante por fora e macio por dentro.",
+              "conteudo": "",
+              "disponivel": true,
+              "favorito": true,
+              "semLactose": false,
+              "semGluten": false,
               "imagem": "../principal/img/itens/paoDeQueijo.png",
               "quantidade": 1,
-              "preco_unitario": 7.5,
-              "subtotal": 7.5
+              "preco_unitario": 5.5,
+              "subtotal": 5.5
             },
             {
-              "produto_id": "7",
-              "nome": "Coca-Cola lata",
+              "id": 7,
+              "titulo": "Coca-Cola lata",
+              "descricao": "Clássica Coca-Cola gelada na lata, ideal para acompanhar qualquer lanche.",
+              "conteudo": "350ml",
+              "disponivel": true,
+              "favorito": true,
+              "semLactose": true,
+              "semGluten": true,
               "imagem": "../principal/img/itens/cocaLata.png",
               "quantidade": 1,
               "preco_unitario": 5.5,
@@ -68,7 +92,7 @@
       "email": "cris@gmail.com",
       "senha": "123456",
       "tipo": "padrão",
-      "historico": [
+      "historico_de_pedidos": [
         {
           "pedido_id": "1",
           "lanchonete_id": "1",
@@ -79,20 +103,33 @@
           "status": "Entregue",
           "itens": [
             {
-              "produto_id": "3",
-              "nome": "Coxinha",
-              "imagem": "../principal/img/itens/coxinha.png",
+              "id": 3,
+              "titulo": "Açaí",
+              "descricao": "Açaí na tigela, nutritivo e energético, ideal para um lanche saudável.",
+              "valor": 7,
+              "conteudo": "500ml",
+              "imagem": "img/itens/acai.png",
+              "disponivel": true,
+              "favorito": true,
+              "semLactose": false,
+              "semGluten": true,
               "quantidade": 2,
-              "preco_unitario": 6,
-              "subtotal": 12
+              "preco_unitario": 7,
+              "subtotal": 14
             },
             {
-              "produto_id": "4",
-              "nome": "Suco de Laranja",
-              "imagem": "../principal/img/itens/",
+              "id": 7,
+              "titulo": "Coca-Cola lata",
+              "descricao": "Clássica Coca-Cola gelada na lata, ideal para acompanhar qualquer lanche.",
+              "conteudo": "350ml",
+              "disponivel": true,
+              "favorito": true,
+              "semLactose": true,
+              "semGluten": true,
+              "imagem": "../principal/img/itens/cocaLata.png",
               "quantidade": 1,
-              "preco_unitario": 7.5,
-              "subtotal": 7.5
+              "preco_unitario": 5.5,
+              "subtotal": 5.5
             }
           ]
         },
@@ -101,25 +138,37 @@
           "lanchonete_id": "2",
           "data": "2025-05-20",
           "hora": "13:30:57",
-          "total": 13.5,
+          "total": 12,
           "forma_pagamento": "Crédito",
           "status": "Entregue",
           "itens": [
             {
-              "produto_id": "6",
-              "nome": "Empada",
+              "id": 6,
+              "titulo": "Empada",
+              "descricao": "Empada salgada com recheio cremoso e massa leve, ótima para o lanche.",
+              "conteudo": "",
+              "disponivel": true,
+              "favorito": false,
+              "semLactose": false,
+              "semGluten": false,
               "imagem": "../principal/img/itens/empada.png",
               "quantidade": 1,
               "preco_unitario": 6.5,
               "subtotal": 6.5
             },
             {
-              "produto_id": "8",
-              "nome": "Coca-Cola lata",
+              "id": 7,
+              "titulo": "Coca-Cola lata",
+              "descricao": "Clássica Coca-Cola gelada na lata, ideal para acompanhar qualquer lanche.",
+              "conteudo": "350ml",
+              "disponivel": true,
+              "favorito": true,
+              "semLactose": true,
+              "semGluten": true,
               "imagem": "../principal/img/itens/cocaLata.png",
               "quantidade": 1,
-              "preco_unitario": 7,
-              "subtotal": 7
+              "preco_unitario": 5.5,
+              "subtotal": 5.5
             }
           ]
         },
@@ -128,21 +177,34 @@
           "lanchonete_id": "1",
           "data": "2025-06-01",
           "hora": "18:45:34",
-          "total": 10,
+          "total": 11.5,
           "forma_pagamento": "Débito",
           "status": "Entregue",
           "itens": [
             {
-              "produto_id": "9",
-              "nome": "Pão de Queijo",
+              "id": 5,
+              "titulo": "Pão de queijo",
+              "descricao": "Tradicional pão de queijo mineiro, crocante por fora e macio por dentro.",
+              "conteudo": "",
+              "disponivel": true,
+              "favorito": true,
+              "semLactose": false,
+              "semGluten": false,
               "imagem": "../principal/img/itens/paoDeQueijo.png",
               "quantidade": 1,
-              "preco_unitario": 4,
-              "subtotal": 4
+              "preco_unitario": 5.5,
+              "subtotal": 5.5
             },
             {
-              "produto_id": "10",
-              "nome": "Suco Dell Vale",
+              "id": 11,
+              "titulo": "Suco lata",
+              "descricao": "Suco de frutas natural enlatado, refrescante e nutritivo.",
+              "valor": 5,
+              "conteudo": "400ml",
+              "disponivel": true,
+              "favorito": true,
+              "semLactose": true,
+              "semGluten": true,
               "imagem": "../principal/img/itens/sucoLata.png",
               "quantidade": 1,
               "preco_unitario": 6,
@@ -175,6 +237,13 @@
       "senha": "usuario1",
       "tipo": "padrão",
       "lanchoneteId": "3"
+    }
+  ],
+  "carrinhos": [
+    {
+      "id": "0d59",
+      "userId": "1",
+      "itens": []
     }
   ],
   "lanchonetes": [
@@ -226,12 +295,14 @@
           "id": 4,
           "titulo": "Coxinha",
           "descricao": "Coxinha de frango com massa crocante e recheio cremoso, um clássico brasileiro.",
-          "valor": "",
+          "valor": 6.5,
           "conteudo": "",
+          "imagem": "img/itens/coxinha.png",
           "disponivel": true,
+          "favorito": true,
+          "quantidade": 13,
           "semLactose": false,
-          "semGluten": false,
-          "imagem": "img/itens/coxinha.png"
+          "semGluten": false
         }
       ]
     },
@@ -476,20 +547,31 @@
     "id": 2,
     "itens": [
       {
-        "produto_id": "6",
-        "nome": "Pão de Queijo Recheado",
-        "imagem": "principal/img/itens/",
+        "id": 5,
+        "titulo": "Pão de queijo",
+        "descricao": "Tradicional pão de queijo mineiro, crocante por fora e macio por dentro.",
+        "conteudo": "",
+        "disponivel": true,
+        "favorito": true,
+        "semLactose": false,
+        "semGluten": false,
+        "imagem": "../principal/img/itens/paoDeQueijo.png",
         "quantidade": 1,
-        "preco_unitario": 7.5,
-        "subtotal": 7.5
+        "preco_unitario": 5.5,
+        "subtotal": 5.5
       },
       {
-        "produto_id": "8",
-        "nome": "Refrigerante",
-        "imagem": "principal/img/itens/",
-        "quantidade": 1,
-        "preco_unitario": 7,
-        "subtotal": 7
+        "id": 7,
+          "titulo": "Coca-Cola lata",
+          "descricao": "Clássica Coca-Cola gelada na lata, ideal para acompanhar qualquer lanche.",
+          "valor": 5.5,
+          "conteudo": "350ml",
+          "imagem": "img/itens/cocaLata.png",
+          "disponivel": true,
+          "favorito": true,
+          "quantidade": 13,
+          "semLactose": true,
+          "semGluten": true
       }
     ]
   },
